@@ -1,0 +1,26 @@
+$baseFontSize: 16px;
+$baseFontFamily: 'Din';
+$baseHeaderFontFamily: 'Abril';
+
+/*
+Colors
+*/
+$clBrand: #b7282e;
+$clBrandLight: #c6353b;
+
+$clGrayDark: #363636;
+$clGray: #999999;
+$clGrayLight: #eaeaea;
+$clGrayLighter: #f1f1f1;
+
+$clText: #303030;
+
+/*
+Dimensions
+*/
+$dmSideGap: 5rem;
+$dmSideGap: 100px; // todo: try to standardize in rem after a while
+
+// sync header menu button with user menu button
+$dmHeaderMenuButtonWidth: 150px;
+$dmHeaderMenuButtonPadding: 40px;

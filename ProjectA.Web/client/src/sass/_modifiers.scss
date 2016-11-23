@@ -1,0 +1,120 @@
+/*
+Positioning
+*/
+.m-full-height {
+  position: relative;
+  height: 100%;
+}
+
+.m-align-wrapper {
+  display: table;
+  width: 100%;
+
+  .align-center,
+  .align-ver-center,
+  .align-hor-center {
+    display: table-cell;
+  }
+  .align-center {
+    text-align: center;
+    vertical-align: middle;
+  }
+  .align-ver-center {
+    vertical-align: middle;
+  }
+  .align-hor-center {
+    text-align: center;
+  }
+}
+
+.m-pad-left-100 {
+  padding: 100px;
+}
+
+.m-pad-top-10 {
+  padding-top: 10px;
+}
+
+.m-pad-bottom-10 {
+  padding-bottom: 10px;
+}
+
+.m-pad-top-30 {
+  padding-top: 30px;
+}
+
+.m-pad-bottom-30 {
+  padding-bottom: 30px;
+}
+
+.m-pad-top-50 {
+  padding-top: 50px;
+}
+
+.m-pad-bottom-50 {
+  padding-bottom: 50px;
+}
+
+/*
+Colors
+*/
+.m-fg-white {
+  color: white !important;
+}
+
+.m-fg-brand {
+  color: $clBrand !important;
+}
+
+.m-fg-brand-light {
+  color: $clBrandLight !important;
+}
+
+/*
+Font / Text
+*/
+.m-ff-dinbold {
+  font-family: Dinbold;
+}
+
+/*
+Lists
+*/
+.m-list-dashed {
+  li {
+    list-style-type: none;
+    position: relative;
+    &:before {
+      content: "-";
+      position: absolute;
+      z-index: 1;
+      left: - 1em;
+    }
+  }
+}
+
+/*
+Anchor
+*/
+.m-a-black {
+  a {
+    color: $clGrayDark;
+  }
+}
+.m-a-underline {
+  a {
+    text-decoration: underline;
+  }
+}
+
+/*
+Image
+*/
+.m-img-grayscale {
+  -webkit-filter: grayscale(1);
+  -webkit-filter: grayscale(100%);
+  filter: gray;
+  filter: grayscale(100%);
+}
+
+

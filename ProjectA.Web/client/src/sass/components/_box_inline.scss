@@ -1,0 +1,15 @@
+.box-inline{
+  .main_middle{
+    padding: 60px;
+
+    span {
+      color: black;
+
+      &.title {
+        font-size: 42px;
+        font-family: Abril;
+        padding-right: 20px;
+      }
+    }
+  }
+}

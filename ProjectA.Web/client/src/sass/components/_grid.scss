@@ -1,0 +1,102 @@
+.row {
+
+  // todo: naming is messed up, refactor
+  &.row_table {
+    display: table;
+    table-layout: fixed;
+    height: 100%;
+    width: 100%;
+
+    .table_line {
+      display: table-row;
+
+      &:not(:first-child) {
+        .box-bordered {
+          border-top: none;
+        }
+      }
+    }
+
+    [class*="col-"], .table_cell {
+      display: table-cell;
+      height: 100%;
+      float: none;
+
+      vertical-align: middle;
+    }
+    .table_cell {
+      width: 100%;
+    }
+
+    & + .row_table {
+      margin-top: -1px !important;
+    }
+    & + .row_table + .row_table {
+      margin-top: -2px !important;
+    }
+  }
+
+  /*
+  Modifiers
+  */
+  // alignment
+  &.row_align_top {
+    [class*="col-"], .table_cell {
+      vertical-align: top;
+    }
+  }
+
+  // padding
+  &.box-padding-sm {
+    .box-bordered {
+      padding: 50px 25px;
+    }
+  }
+
+  &.box-padding-horizontal-sm {
+    .box-bordered {
+      padding-right: 25px;
+      padding-left: 25px;
+    }
+  }
+  &.box-padding-vertical-sm {
+    .box-bordered {
+      padding-top: 25px;
+      padding-bottom: 25px;
+    }
+  }
+
+  &.box-padding-md {
+    .box-bordered {
+      padding: 50px;
+    }
+  }
+
+  &.box-padding-none {
+    .box-bordered {
+      padding: 0;
+    }
+  }
+
+  // font
+  &.box-content-font-sm {
+    .box-bordered {
+      font-size: 14px;
+    }
+  }
+  &.box-heading-font-sm {
+    .box-bordered {
+      h1, h2, h3, h4, h5 {
+        font-size: 20px;
+      }
+    }
+  }
+
+  &.box-heading-red {
+    h1, h2, h3, h4, h5 {
+      color: $clBrandLight;
+      font-size: 24px;
+    }
+  }
+
+}

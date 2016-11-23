@@ -1,0 +1,14 @@
+.row_news {
+  .news {
+    padding: 50px;
+    display: table;
+    & > div {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .btn-register {
+      display: inline-block;
+      position: relative;
+    }
+  }
+}

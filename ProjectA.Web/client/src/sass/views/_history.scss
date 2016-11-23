@@ -1,0 +1,50 @@
+.history_timeline {
+  &.owl-carousel {
+    position: relative;
+    padding: 0 50px;
+  }
+  .owl-stage-outer {
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 1px;
+      background: #FFFFFF;
+      z-index: 1;
+    }
+  }
+
+  .year {
+    text-align: center;
+    padding: 5px 10px;
+    border-right: solid 1px $clGray;
+    cursor: pointer;
+
+    h1 {
+      margin-top: 10px;
+      color: $clGrayLight;
+    }
+
+    &.active {
+      h1 {
+        color: $clBrandLight;
+      }
+    }
+  }
+  .owl-next {
+    background: url(../image-assets/HistoryArrow.svg);
+    background-repeat: no-repeat;
+    top: 20%;
+    right: 5px;
+  }
+
+  .owl-prev {
+    background: url(../image-assets/HistoryArrow.svg);
+    background-repeat: no-repeat;
+    transform: rotateY(180deg);
+    top: 20%;
+    left: 10px;
+  }
+}

@@ -1,0 +1,15 @@
+.calendar {
+  .year {
+
+  }
+  .months {
+    display: none;
+    .active {
+      color: $clBrandLight;
+    }
+  }
+
+  .archive {
+    color: inherit;
+  }
+}

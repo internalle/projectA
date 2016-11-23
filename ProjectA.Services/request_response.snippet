@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets
+    xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+			<Title>Request response template</Title>
+			<Author>Vojdan Gicharovski</Author>
+			<Shortcut>rr</Shortcut>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+        <Snippet>
+            <Code Language="CSharp" Kind="any">
+                <![CDATA[
+					using FluentValidation;
+					using FluentValidation.Results;
+					using System;
+					using System.Collections.Generic;
+					using System.Linq;
+					using System.Text;
+					using System.Threading.Tasks;
+
+					namespace ProjectA.Services.Features.Authentication
+					{
+						public class UserLogin
+						{
+							public class Request : BaseRequest<Response>
+							{
+							}
+
+							public class Response : BaseResponse {
+							}
+
+							public class Validator : BaseValidator<Response, Request>
+							{
+								public Validator(){
+								}
+							}
+
+							public class Handler : BaseHandler<Response, Request>
+							{
+								public override Response Handle(Request request)
+								{
+									return new Response();
+								}
+							}
+						}
+					}
+					]]>
+            </Code>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>
