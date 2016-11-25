@@ -2,11 +2,14 @@ var gulp = require("gulp");
 var sass = require("gulp-sass");
 var ts = require("gulp-typescript");
 var imagemin = require("gulp-imagemin");
+var tap = require("gulp-tap");
+var fs = require("fs");
 
 gulp.task("watch", ["build"], function(){
     gulp.watch('src/sass/*', ['build-sass']);
     gulp.watch('src/ts/*', ['build-typescript']);
     gulp.watch('src/images/*', ['minify-images']);
+    gulp.watch('typings/*', ['build-referencesjs']);
 });
 
 gulp.task("build", ["build-sass", "build-typescript", "minify-images"]);
@@ -17,10 +20,23 @@ gulp.task("build-sass", function(){
         .pipe(gulp.dest('dist/css/'));
 });
 
-gulp.task("build-typescript", function(){
-    gulp.src('src/ts/*')
+gulp.task("build-typescript", ['build-referencesjs'], function(){
+    gulp.src('src/ts/**/*.ts')
         .pipe(ts())
         .pipe(gulp.dest('dist/js'))
+});
+
+gulp.task("build-referencesjs", function(){
+	fs.writeFileSync("src/ts/_references.js", '/// <reference path="../../typings/tsd.d.ts" />\n\r');
+	gulp.src('src/ts/**/*.ts')
+		.pipe(tap(function(file, t) {
+			var relPath = file.path.replace(file.base, "");
+			var row = '/// <reference path="' + relPath + '" />\n\r';
+			row = row.replace("\\", "/");
+  			fs.appendFileSync("src/ts/_references.js", row);
+	    }))
+		.pipe(gulp.dest('dist/debug.js'));
+
 });
 
 gulp.task("minify-images", function(){
