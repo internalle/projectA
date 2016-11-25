@@ -1,5 +1,6 @@
 var gulp = require("gulp");
 var sass = require("gulp-sass");
+var sassGlob = require('gulp-sass-glob');
 var ts = require("gulp-typescript");
 var imagemin = require("gulp-imagemin");
 var tap = require("gulp-tap");
@@ -15,14 +16,18 @@ gulp.task("watch", ["build"], function(){
 gulp.task("build", ["build-sass", "build-typescript", "minify-images"]);
 
 gulp.task("build-sass", function(){ 
-    gulp.src('src/sass/*')
+    gulp.src('src/sass/style.scss')
+   		.pipe(sassGlob())
    		.pipe(sass())
         .pipe(gulp.dest('dist/css/'));
 });
 
 gulp.task("build-typescript", ['build-referencesjs'], function(){
     gulp.src('src/ts/**/*.ts')
-        .pipe(ts())
+        .pipe(ts({
+            out: 'compiled-ts.js',
+            removeComments: false
+        }))
         .pipe(gulp.dest('dist/js'))
 });
 
@@ -34,8 +39,7 @@ gulp.task("build-referencesjs", function(){
 			var row = '/// <reference path="' + relPath + '" />\n\r';
 			row = row.replace("\\", "/");
   			fs.appendFileSync("src/ts/_references.js", row);
-	    }))
-		.pipe(gulp.dest('dist/debug.js'));
+	    }));
 
 });
 

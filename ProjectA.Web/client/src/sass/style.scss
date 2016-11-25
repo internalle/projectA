@@ -2,5 +2,5 @@
 @import "modifiers";
 @import "structure";
 
-@import "components/*";
-@import "views/*";
+@import "components/**/*.scss";
+@import "views/**/*.scss";
