@@ -29,6 +29,7 @@ namespace ProjectA.Services.Features.Authentication
         {
             public override Response Handle(Request request)
             {
+                throw new Exception("Lom");
                 return new Response();
             }
         }

@@ -1,6 +1,5 @@
 using ProjectA.Core.Infrastructure;
 using ProjectA.Core.Infrastructure.Logging;
-using MongoRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,34 +10,24 @@ namespace ProjectA.Framework.Logging
 {
     public class DatabaseLogger : ILogger
     {
-        MongoRepository<LoggedException> _exceptionRepo;
-        MongoRepository<LoggedMessage> _messageRepo;
-
-        public DatabaseLogger(MongoRepository<LoggedException> exceptionRepo,
-                            MongoRepository<LoggedMessage> messageRepo)
-        {
-            _exceptionRepo = exceptionRepo;
-            _messageRepo = messageRepo;
-        }
-
         public void Error(Exception ex)
         {
-            _exceptionRepo.Add(LoggedException.FromException(ex));
+            LoggedException.FromException(ex).Save();
         }
 
         public void Info(string title, string message)
         {
-            _messageRepo.Add(new LoggedMessage(title, message, LoggedMessage.LogType.Info));
+            new LoggedMessage(title, message, LoggedMessage.LogType.Info).Save();
         }
 
         public void Log(string title, string message)
         {
-            _messageRepo.Add(new LoggedMessage(title, message, LoggedMessage.LogType.Log));
+            new LoggedMessage(title, message, LoggedMessage.LogType.Log).Save();
         }
 
         public void Warning(string title, string message)
         {
-            _messageRepo.Add(new LoggedMessage(title, message, LoggedMessage.LogType.Warning));
+            new LoggedMessage(title, message, LoggedMessage.LogType.Warning).Save();
         }
     }
 }

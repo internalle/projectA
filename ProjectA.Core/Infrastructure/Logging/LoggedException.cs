@@ -1,31 +1,29 @@
-using MongoRepository;
+using FluentNHibernate.Automapping.Alterations;
+using FluentNHibernate.Mapping;
+using NHibernate;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentNHibernate.Automapping;
+using System.Web.Helpers;
 
 namespace ProjectA.Core.Infrastructure.Logging
 {
-    public class LoggedException : Entity
+    public class LoggedException : ActiveRecord<LoggedException>
     {
-        public IDictionary Data { get; set; }
+        public virtual LoggedException InnerException { get; set; }
 
-        public string HelpLink { get; set; }
+        public virtual string Message { get; set; }
 
-        public int HResult { get; set; }
+        public virtual string Source { get; set; }
 
-        public LoggedException InnerException { get; set; }
+        public virtual string StackTrace { get; set; }
 
-        public string Message { get; set; }
+        public virtual DateTime CreatedOn { get; set; }
 
-        public string Source { get; set; }
-
-        public string StackTrace { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-        
         public static LoggedException FromException(Exception ex)
         {
             if (ex == null)
@@ -33,9 +31,6 @@ namespace ProjectA.Core.Infrastructure.Logging
 
             return new LoggedException
             {
-                Data = ex.Data,
-                HelpLink = ex.HelpLink,
-                HResult = ex.HResult,
                 Source = ex.Source,
                 Message = ex.Message,
                 StackTrace = ex.StackTrace,
@@ -44,4 +39,12 @@ namespace ProjectA.Core.Infrastructure.Logging
             };
         }
     }
+
+    //public class LoggedExcaptionMap : IAutoMappingOverride<LoggedException>
+    //{
+    //    public void Override(AutoMapping<LoggedException> mapping)
+    //    {
+    //        mapping.IgnoreProperty(x => x.Data);
+    //    }
+    //}
 }

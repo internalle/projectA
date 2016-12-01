@@ -1,7 +1,10 @@
 using Autofac;
+using Autofac.Extras.CommonServiceLocator;
 using Autofac.Integration.Mvc;
+using FluentNHibernate.Automapping;
+using Microsoft.Practices.ServiceLocation;
 using ProjectA.Configuration;
-using ProjectA.Framework.DI;
+using ProjectA.Configuration.DI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +28,11 @@ namespace ProjectA.Web
             builder.RegisterControllers();
             builder = AutofacConfiguration.Load(builder);
             var container = builder.Build();
+
+            ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+
+            ServiceLocator.Current.GetInstance<AutoPersistenceModel>().Configure(ServiceLocator.Current.GetInstance<NHibernate.Cfg.Configuration>());
         }
 
         protected void Application_BeginRequest(Object sender, EventArgs e)

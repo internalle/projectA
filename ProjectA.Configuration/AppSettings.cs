@@ -9,6 +9,6 @@ namespace ProjectA.Configuration
 {
     public class AppSettings : IAppSettings
     {
-        public string MongoDBConnectionString => ConfigurationManager.AppSettings["MongoDBConnectionString"];
+        public string ConnectionString => ConfigurationManager.AppSettings["ConnectionString"];
     }
 }

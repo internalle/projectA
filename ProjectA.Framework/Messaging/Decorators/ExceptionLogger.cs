@@ -1,7 +1,6 @@
 using ProjectA.Core.Infrastructure;
 using ProjectA.Framework.Logging;
 using ProjectA.Services;
-using MongoRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

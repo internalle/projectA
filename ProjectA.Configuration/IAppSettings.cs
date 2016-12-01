@@ -8,6 +8,6 @@ namespace ProjectA.Configuration
 {
     public interface IAppSettings
     {
-        string MongoDBConnectionString { get; }
+        string ConnectionString { get; }
     }
 }

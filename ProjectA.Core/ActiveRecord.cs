@@ -1,8 +1,3 @@
-using ProjectA.Core.Attributes;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoRepository;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,63 +5,39 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using NHibernate;
+using System.Web.Mvc;
+using Microsoft.Practices.ServiceLocation;
 
 namespace ProjectA.Core
 {
     public abstract class ActiveRecord<T> : Entity where T : Entity
     {
-        protected static MongoRepository<T> Repository
+        protected static ISession _session => ServiceLocator.Current.GetInstance<ISession>();
+
+        public static IList<T> Query(Expression<Func<T, bool>> predicate)
         {
-            get
-            {
-                return new MongoRepository<T>(ConfigurationManager.AppSettings["MongoDBConnectionString"], typeof(T).Name);
-            }
+            return _session.QueryOver<T>().Where(predicate).List<T>();
         }
 
-        public static IQueryable<T> Query(Expression<Func<T, bool>> predicate)
+        public static T Get(int id)
         {
-            return Repository.Where(predicate);
+            return _session.Get<T>(id);
         }
 
-        public static T Get(string id)
+        public virtual void Save()
         {
-            return Repository.GetById(id);
+            _session.SaveOrUpdate(this);
         }
 
-        public void Save()
+        public virtual void Delete()
         {
-            CheckPropertyConstrains(this as T);
-            if (Repository.Any(x => x.Id == this.Id))
-            {
-                Repository.Update(this as T);
-            }
-            else {
-                Repository.Add(this as T);
-            }
+            _session.Delete(this as T);
         }
 
-        public void Delete()
+        public static void Delete(int id)
         {
-            Repository.Delete(this as T);
-        }
-
-        public static void Delete(string id)
-        {
-            Repository.Delete(id);
-        }
-
-        private bool CheckPropertyConstrains(T obj)
-        {
-            var required = typeof(T).GetProperties().Where(x => x.GetCustomAttributes(true).OfType<RequiredAttribute>().Any());
-
-            foreach (var req in required)
-            {
-                if (req.GetValue(obj) == null)
-                {
-                    throw new RequeiredPropertyException();
-                }
-            }
-            return true;
+            _session.Delete(id);
         }
     }
 }
