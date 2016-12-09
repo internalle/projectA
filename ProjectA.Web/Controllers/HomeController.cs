@@ -14,7 +14,7 @@ namespace ProjectA.Web.Controllers
         public ActionResult Index()
         {
             ViewBag.Message = ResourceProvider.ByString("Resource.Hello");
-            Dispatch(new UserLogin.Request());
+
             return View();
         }
 

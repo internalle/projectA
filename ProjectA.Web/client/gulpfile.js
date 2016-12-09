@@ -32,13 +32,13 @@ gulp.task("build-typescript", ['build-referencesjs'], function(){
 });
 
 gulp.task("build-referencesjs", function(){
-	fs.writeFileSync("src/ts/_references.js", '/// <reference path="../../typings/tsd.d.ts" />\n\r');
+	fs.writeFileSync("_references.ts", '/// <reference path="typings/tsd.d.ts" />\n\r');
 	gulp.src('src/ts/**/*.ts')
 		.pipe(tap(function(file, t) {
 			var relPath = file.path.replace(file.base, "");
-			var row = '/// <reference path="' + relPath + '" />\n\r';
+			var row = '/// <reference path="src/ts/' + relPath + '" />\n\r';
 			row = row.replace("\\", "/");
-  			fs.appendFileSync("src/ts/_references.js", row);
+  			fs.appendFileSync("_references.ts", row);
 	    }));
 
 });
