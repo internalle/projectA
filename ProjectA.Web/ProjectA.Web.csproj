@@ -255,7 +255,9 @@
     <Content Include="client\dist\js\compiled-ts.js" />
     <Content Include="client\gulpfile.js" />
     <Content Include="client\src\images\stub.png" />
+    <Content Include="Views\Home\About.cshtml" />
     <TypeScriptCompile Include="client\_references.ts" />
+    <TypeScriptCompile Include="client\src\ts\Views\shared.ts" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -348,7 +350,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="client\src\ts\index.ts" />
+    <TypeScriptCompile Include="client\src\ts\Views\Home\index.ts" />
     <TypeScriptCompile Include="client\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="client\typings\toastr\toastr.d.ts" />
     <TypeScriptCompile Include="client\typings\tsd.d.ts" />

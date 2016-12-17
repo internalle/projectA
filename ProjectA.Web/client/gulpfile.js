@@ -7,10 +7,10 @@ var tap = require("gulp-tap");
 var fs = require("fs");
 
 gulp.task("watch", ["build"], function(){
-    gulp.watch('src/sass/*', ['build-sass']);
-    gulp.watch('src/ts/*', ['build-typescript']);
-    gulp.watch('src/images/*', ['minify-images']);
-    gulp.watch('typings/*', ['build-referencesjs']);
+    gulp.watch('src/sass/**', ['build-sass']);
+    gulp.watch('src/ts/**', ['build-typescript']);
+    gulp.watch('src/images/**', ['minify-images']);
+    gulp.watch('typings/**', ['build-referencesjs']);
 });
 
 gulp.task("build", ["build-sass", "build-typescript", "minify-images"]);

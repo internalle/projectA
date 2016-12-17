@@ -20,6 +20,11 @@ namespace ProjectA.Core
             return _session.QueryOver<T>().Where(predicate).List<T>();
         }
 
+        public static IList<T> List()
+        {
+            return _session.QueryOver<T>().List<T>();
+        }
+
         public static T Get(int id)
         {
             return _session.Get<T>(id);

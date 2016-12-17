@@ -20,5 +20,9 @@
     @Scripts.Render("~/client/vendor/js")
     @Scripts.Render("~/client/js")
     @RenderSection("scripts", required: false)
+
+    <script>
+        new Views.Shared();
+    </script>
 </body>
 </html>

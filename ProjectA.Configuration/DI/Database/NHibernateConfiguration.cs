@@ -17,7 +17,7 @@ namespace ProjectA.Configuration.DI.Database
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.Register(x => x.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerLifetimeScope();
+            builder.Register(x => x.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerDependency();
             builder.Register((container) =>
             {
                 var settings = container.Resolve<IAppSettings>();

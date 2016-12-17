@@ -1,4 +1,5 @@
 using ProjectA.i18n;
+using ProjectA.Services.Features.Measurements;
 using System.Web.Mvc;
 
 namespace ProjectA.Web.Controllers
@@ -7,8 +8,12 @@ namespace ProjectA.Web.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = ResourceProvider.ByString("Resource.Hello");
+            var unitsResult = Dispatch(new ListAllUnits.Request());
+            return View(unitsResult.Response);
+        }
 
+        public ActionResult About()
+        {
             return View();
         }
     }

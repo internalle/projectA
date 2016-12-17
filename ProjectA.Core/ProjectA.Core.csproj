@@ -87,6 +87,10 @@
   <ItemGroup>
     <Compile Include="Entity.cs" />
     <Compile Include="ActiveRecord.cs" />
+    <Compile Include="Features\Locations\City.cs" />
+    <Compile Include="Features\Locations\MeasurementStation.cs" />
+    <Compile Include="Features\Measurements\MeasurementUnit.cs" />
+    <Compile Include="Features\Measurements\MeasurementValue.cs" />
     <Compile Include="Infrastructure\Logging\LoggedException.cs" />
     <Compile Include="Infrastructure\Logging\LoggedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,9 +99,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Features\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

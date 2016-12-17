@@ -1,4 +1,19 @@
+@model ProjectA.Services.Features.Measurements.ListAllUnits.Response
 @{
     ViewBag.Title = "Home Page";
 }
-<h1>@ViewBag.Message</h1>
+
+<select class="ui dropdown">
+    <option value="Skopje">Skopje</option>
+</select>
+
+<select class="ui dropdown">
+    <option value="Skopje">Stanica Centar</option>
+</select>
+
+<select class="ui dropdown">
+    @foreach (var unit in Model.Units)
+    {
+        <option value="@unit.Id">@unit.Name</option>
+    }
+</select>
