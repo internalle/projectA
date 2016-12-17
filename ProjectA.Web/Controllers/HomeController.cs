@@ -1,11 +1,5 @@
 using ProjectA.i18n;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Resources;
-using System.Web;
 using System.Web.Mvc;
-using ProjectA.Services.Features.Authentication;
 
 namespace ProjectA.Web.Controllers
 {
@@ -16,6 +10,11 @@ namespace ProjectA.Web.Controllers
             ViewBag.Message = ResourceProvider.ByString("Resource.Hello");
 
             return View();
+        }
+
+        public new ActionResult ChangeCulture(string culture)
+        {
+            return base.ChangeCulture(culture);
         }
 
         public ActionResult About()

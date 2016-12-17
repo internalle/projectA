@@ -13,15 +13,7 @@ namespace ProjectA.i18n
             try
             {
                 var result = resourceManager.GetString(resourceKey);
-
-                if (string.IsNullOrEmpty(result))
-                {
-                    return key;
-                }
-                else
-                {
-                    return result;
-                }
+                return !string.IsNullOrEmpty(result) ? result : key;
             }
             catch
             {
