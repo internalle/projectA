@@ -11,24 +11,5 @@ namespace ProjectA.Web.Controllers
 
             return View();
         }
-
-        public new ActionResult ChangeCulture(string culture)
-        {
-            return base.ChangeCulture(culture);
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
     }
 }

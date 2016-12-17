@@ -29,7 +29,7 @@ namespace ProjectA.Web.Controllers
             return result;
         }
 
-        protected ActionResult ChangeCulture(string culture)
+        public ActionResult ChangeCulture(string culture)
         {
             var returnUrl = Request.QueryString["ReturnUrl"] as string ?? Request.UrlReferrer?.AbsolutePath ?? "~/";
 
