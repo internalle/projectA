@@ -337,3 +337,5 @@ __pycache__/
 ### VisualStudio Patch ###
 build/
 ProjectA.Web/client/dist
+ProjectA.Web/AppSettings.Debug.config
+ProjectA.Web/AppSettings.Release.config
