@@ -53,6 +53,7 @@
     <Compile Include="BaseRequest.cs" />
     <Compile Include="BaseResponse.cs" />
     <Compile Include="BaseValidator.cs" />
+    <Compile Include="Database\InitializeStaticData.cs" />
     <Compile Include="EmptyResponse.cs" />
     <Compile Include="Features\Measurements\ListAllUnits.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
