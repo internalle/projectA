@@ -43,7 +43,7 @@ namespace ProjectA.Configuration.DI.Database
                 .Database(MySQLConfiguration.Standard.ConnectionString(appSettings.ConnectionString))
                 .ExposeConfiguration(c => c.SetProperty(Environment.ReleaseConnections, "on_close"))
                 .ExposeConfiguration(c => c.SetProperty(Environment.ProxyFactoryFactoryClass, typeof(NHibernate.Bytecode.DefaultProxyFactoryFactory).AssemblyQualifiedName))
-                .ExposeConfiguration(c => c.SetProperty(Environment.Hbm2ddlAuto, "create"))
+                .ExposeConfiguration(c => c.SetProperty(Environment.Hbm2ddlAuto, "update"))
                 .ExposeConfiguration(c => c.SetProperty(Environment.ShowSql, "true"))
                 .ExposeConfiguration(BuildSchema)
                 .BuildConfiguration();

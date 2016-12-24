@@ -21,9 +21,7 @@ namespace ProjectA.Services.Features.Measurements
         public class Handler : BaseHandler<Response, Request>
         {
             public override Response Handle(Request request)
-            {
-                //MeasurementUnit.Init();
-
+            {                
                 return new Response
                 {
                     Units = MeasurementUnit.List()

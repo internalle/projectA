@@ -29,10 +29,11 @@ namespace ProjectA.Web
             builder = AutofacConfiguration.Load(builder);
             var container = builder.Build();
 
-            ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
 
-            ServiceLocator.Current.GetInstance<AutoPersistenceModel>().Configure(ServiceLocator.Current.GetInstance<NHibernate.Cfg.Configuration>());
+            var config = ServiceLocator.Current.GetInstance<NHibernate.Cfg.Configuration>();
+            ServiceLocator.Current.GetInstance<AutoPersistenceModel>().Configure(config);
         }
 
         protected void Application_BeginRequest(Object sender, EventArgs e)

@@ -1,7 +1,8 @@
 using Microsoft.Owin;
 using Owin;
 using ProjectA.Framework.Messaging;
-using ProjectA.Services.Database;
+using ProjectA.Seeders;
+using ProjectA.Seeders.Features.Measurements;
 using System.Web.Mvc;
 
 [assembly: OwinStartupAttribute(typeof(ProjectA.Web.Startup))]
@@ -11,7 +12,10 @@ namespace ProjectA.Web
     {
         public void Configuration(IAppBuilder app)
         {
-            DependencyResolver.Current.GetService<IDispatcher>().Dispatch(new InitializeStaticData.Request());
+            new SeedersRunner()
+                .RegisterAssembly(typeof(SeedersRunner).Assembly)
+                //.RegisterSeeder(typeof(MeasuremetUnitSeeder))
+                .Run();
         }
     }
 }

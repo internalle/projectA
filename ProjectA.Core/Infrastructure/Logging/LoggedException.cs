@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentNHibernate.Automapping;
-using System.Web.Helpers;
 
 namespace ProjectA.Core.Infrastructure.Logging
 {
