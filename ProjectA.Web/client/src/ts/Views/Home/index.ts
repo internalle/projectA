@@ -3,6 +3,7 @@
 module Views{
     export class Index{
         constructor() {
+
         }
 	}
 }
