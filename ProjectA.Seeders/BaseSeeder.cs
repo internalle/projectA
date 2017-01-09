@@ -53,7 +53,12 @@ namespace ProjectA.Seeders
                 throw new NullReferenceException();
             }
 
-            old.Delete();
+            var type = typeof(T);
+            foreach (var prop in type.GetProperties())
+            {
+                prop.SetValue(obj, prop.GetValue(old));
+            }
+
             obj.Save();
 
             return this;

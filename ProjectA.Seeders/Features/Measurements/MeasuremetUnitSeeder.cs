@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,8 +11,8 @@ namespace ProjectA.Seeders.Features.Measurements
     public class MeasuremetUnitSeeder : BaseSeeder<MeasurementUnit>
     {
         public MeasuremetUnitSeeder()
-        {
-            Builder.ClearData()
+        {            
+            Builder
                 .UpdateOrAdd(new MeasurementUnit { Name = "PM25", Unit = "" }, x => x.Name == "PM25")
                 .UpdateOrAdd(new MeasurementUnit { Name = "PM10", Unit = "" }, x => x.Name == "PM10")
                 .UpdateOrAdd(new MeasurementUnit { Name = "O3", Unit = "" }, x => x.Name == "O3")
