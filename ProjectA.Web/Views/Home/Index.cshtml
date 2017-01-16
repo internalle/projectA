@@ -17,3 +17,12 @@
         <option value="@unit.Id">@unit.Name</option>
     }
 </select>
+
+@Html.Partial("~/Views/Shared/Components/WheelMeter.cshtml", "PM25")
+@Html.Partial("~/Views/Shared/Components/WheelMeter.cshtml", "PM10")
+
+@section scripts{ 
+    <script>
+        new Views.Index();
+    </script>
+}

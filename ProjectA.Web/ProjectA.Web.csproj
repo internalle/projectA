@@ -256,6 +256,8 @@
     <Content Include="client\gulpfile.js" />
     <Content Include="client\src\images\stub.png" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Shared\Components\WheelMeter.cshtml" />
+    <TypeScriptCompile Include="client\src\ts\Components\wheelMeter.ts" />
     <TypeScriptCompile Include="client\_references.ts" />
     <TypeScriptCompile Include="client\src\ts\Views\shared.ts" />
     <Content Include="favicon.ico" />
