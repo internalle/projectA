@@ -40,7 +40,6 @@ gulp.task("build-referencesjs", function(){
 			row = row.replace("\\", "/");
   			fs.appendFileSync("_references.ts", row);
 	    }));
-
 });
 
 gulp.task("minify-images", function(){

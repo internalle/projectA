@@ -338,6 +338,10 @@
       <Project>{b0671271-4dab-4692-9e10-c8d625e799b0}</Project>
       <Name>ProjectA.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProjectA.Database\ProjectA.Database.csproj">
+      <Project>{F7EAD7B8-5D5C-4AA4-A70D-110493279EC3}</Project>
+      <Name>ProjectA.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProjectA.Framework\ProjectA.Framework.csproj">
       <Project>{b6c4ccd7-2fa5-4a87-8b5f-04d6b8423a11}</Project>
       <Name>ProjectA.Framework</Name>
@@ -346,13 +350,13 @@
       <Project>{7D7581D8-C8EE-40E7-A9DD-C7F531476130}</Project>
       <Name>ProjectA.i18n</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ProjectA.Seeders\ProjectA.Seeders.csproj">
-      <Project>{F7EAD7B8-5D5C-4AA4-A70D-110493279EC3}</Project>
-      <Name>ProjectA.Seeders</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ProjectA.Services\ProjectA.Services.csproj">
       <Project>{bf1b00c5-540f-4b7c-94eb-6c654d5cef11}</Project>
       <Name>ProjectA.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QSeed\QSeed.csproj">
+      <Project>{cbea7244-f678-4e87-80a9-7b7ed51fc268}</Project>
+      <Name>QSeed</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

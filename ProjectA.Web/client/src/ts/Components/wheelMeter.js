@@ -5,6 +5,7 @@ var Componenets;
         function WheelMeter($root) {
             this.$root = $root;
             this.queryElements();
+            this.initClickHandlers();
         }
         WheelMeter.prototype.queryElements = function () {
             this.$title = this.$root.find(".title");

@@ -1,8 +1,8 @@
 using Microsoft.Owin;
 using Owin;
+using ProjectA.Database;
 using ProjectA.Framework.Messaging;
-using ProjectA.Seeders;
-using ProjectA.Seeders.Features.Measurements;
+using QSeed;
 using System.Web.Mvc;
 
 [assembly: OwinStartupAttribute(typeof(ProjectA.Web.Startup))]
@@ -12,9 +12,9 @@ namespace ProjectA.Web
     {
         public void Configuration(IAppBuilder app)
         {
-            new SeedersRunner()
-                .RegisterAssembly(typeof(SeedersRunner).Assembly)
-                //.RegisterSeeder(typeof(MeasuremetUnitSeeder))
+            new SeedersRunner(typeof(Repository<>), masterSeederType: typeof(DatabaseSeeder))
+                .RegisterSeedersAssembly(typeof(Repository<>).Assembly)
+                .RegisterFactoriesAssembly(typeof(Repository<>).Assembly)
                 .Run();
         }
     }
