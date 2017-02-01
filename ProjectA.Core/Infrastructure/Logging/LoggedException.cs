@@ -1,13 +1,9 @@
-using FluentNHibernate.Automapping.Alterations;
-using FluentNHibernate.Mapping;
-using NHibernate;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FluentNHibernate.Automapping;
 
 namespace ProjectA.Core.Infrastructure.Logging
 {

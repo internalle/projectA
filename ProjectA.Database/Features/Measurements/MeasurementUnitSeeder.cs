@@ -11,7 +11,7 @@ using QSeed.Config;
 
 namespace ProjectA.Seeders.Features.Measurements
 {
-    public class MeasuremetUnitSeeder : BaseSeeder
+    public class MeasurementUnitSeeder : BaseSeeder
     {
         public override void Run()
         {

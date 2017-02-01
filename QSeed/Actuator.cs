@@ -29,7 +29,7 @@ namespace QSeed
 
         public ModelFactory<T> GetModalFactoryInstance<T>()
         {
-            var genericType = ModelFactoryTypes.FirstOrDefault(x=>x.BaseType == typeof(ModelFactory<T>));
+            var genericType = ModelFactoryTypes.FirstOrDefault(x=>x.IsSubclassOf(typeof(ModelFactory<T>)));
             var instance = Activator.CreateInstance(genericType) as ModelFactory<T>;
             instance.SetActuator(this);
             return instance;

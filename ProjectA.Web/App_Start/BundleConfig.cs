@@ -1,3 +1,4 @@
+using ProjectA.Configuration.Base;
 using System.Web;
 using System.Web.Optimization;
 
@@ -5,7 +6,7 @@ namespace ProjectA.Web
 {
     public class BundleConfig
     {
-        public static void RegisterBundles(BundleCollection bundles)
+        public static void RegisterBundles(BundleCollection bundles, IAppSettings settings)
         {
             bundles.Add(new ScriptBundle("~/client/vendor/js").Include(
                       "~/client/bower_components/jquery/dist/jquery.js",
@@ -29,11 +30,15 @@ namespace ProjectA.Web
                       "~/client/bower_components/semantic/dist/semantic.css",
                       "~/client/bower_components/jquery-ui/themes/ui-lightness/theme.css",
                       "~/client/bower_components/toastr/toastr.css"));
-#if DEBUG
-            BundleTable.EnableOptimizations = false;
-#else
-            BundleTable.EnableOptimizations = true;
-#endif
+
+            if (settings.IsDebug)
+            {
+                BundleTable.EnableOptimizations = false;
+            }
+            else
+            {
+                BundleTable.EnableOptimizations = true;
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using Autofac.Integration.Mvc;
 using FluentNHibernate.Automapping;
 using Microsoft.Practices.ServiceLocation;
 using ProjectA.Configuration;
+using ProjectA.Configuration.Base;
 using ProjectA.Configuration.DI;
 using System;
 using System.Collections.Generic;
@@ -17,23 +18,28 @@ namespace ProjectA.Web
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        protected void Application_Start()
+        private void BootDI()
         {
-            AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-
             var builder = new ContainerBuilder();
             builder.RegisterControllers();
-            builder = AutofacConfiguration.Load(builder);
+            builder = AutofacConfiguration.Load(builder, new AppSettings());
             var container = builder.Build();
+            
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
+            ServiceLocator.Current.GetInstance<AutoPersistenceModel>();
+        }
 
-            var config = ServiceLocator.Current.GetInstance<NHibernate.Cfg.Configuration>();
-            ServiceLocator.Current.GetInstance<AutoPersistenceModel>().Configure(config);
+        protected void Application_Start()
+        {
+            BootDI();
+            IAppSettings settings = ServiceLocator.Current.GetInstance<IAppSettings>();
+
+            AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles, settings);
         }
 
         protected void Application_BeginRequest(Object sender, EventArgs e)

@@ -24,7 +24,7 @@ namespace ProjectA.Services.Features.Measurements
             {                
                 return new Response
                 {
-                    Units = MeasurementUnit.List()
+                    Units = MeasurementUnit.Query()
                 };
             }
         }

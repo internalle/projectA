@@ -11,7 +11,7 @@ using QSeed.Config;
 
 namespace ProjectA.Seeders.Features.Measurements
 {
-    public class MeasuremetUnitFactory : ModelFactory<MeasurementUnit>
+    public class MeasurementUnitFactory : ModelFactory<MeasurementUnit>
     {
         protected override MeasurementUnit Build()
         {

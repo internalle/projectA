@@ -32,7 +32,7 @@ namespace QSeed
 
         public SeedersRunner RegisterSeedersAssembly(Assembly assembly)
         {
-            var scannedSeeders = assembly.GetExportedTypes().Where(x => x.BaseType?.Name == typeof(BaseSeeder).Name);
+            var scannedSeeders = assembly.GetExportedTypes().Where(x => x.IsSubclassOf(typeof(BaseSeeder)));
             foreach(var seeder in scannedSeeders)
             {
                 RegisterSeederType(seeder);
@@ -43,7 +43,7 @@ namespace QSeed
 
         public SeedersRunner RegisterSeederType(Type seederType)
         {
-            if (seederType.BaseType.Name != typeof(BaseSeeder).Name)
+            if (seederType == default(Type) || !seederType.IsSubclassOf(typeof(BaseSeeder)))
             {
                 throw new InvalidCastException($"{typeof(BaseSeeder).FullName} expected");
             }
@@ -54,7 +54,7 @@ namespace QSeed
 
         public SeedersRunner RegisterFactoriesAssembly(Assembly assembly)
         {
-            var scannedModelFactories = assembly.GetExportedTypes().Where(x => x.BaseType?.Name == typeof(ModelFactory<>).Name);
+            var scannedModelFactories = assembly.GetExportedTypes().Where(x => x.BaseType.Name == (typeof(ModelFactory<>).Name));
             foreach (var factory in scannedModelFactories)
             {
                 RegisterFactoryType(factory);
@@ -65,7 +65,7 @@ namespace QSeed
 
         public SeedersRunner RegisterFactoryType(Type factoryType)
         {
-            if (factoryType.BaseType.Name != typeof(ModelFactory<>).Name)
+            if (factoryType == default(Type) || factoryType.BaseType.Name != (typeof(ModelFactory<>).Name))
             {
                 throw new InvalidCastException($"{typeof(ModelFactory<>).FullName} expected");
             }

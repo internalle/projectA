@@ -6,18 +6,20 @@ using FluentNHibernate.Conventions;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
-using ProjectA.Core;
 using System.IO;
 using System.Reflection;
 using FluentNHibernate.Conventions.Instances;
+using ProjectA.Core;
+using ProjectA.Configuration.Base;
+using ProjectA.Configuration.MySQL.Repository;
 
-namespace ProjectA.Configuration.DI.Database
+namespace ProjectA.Configuration.MySQL.DI
 {
-    public class NHibernateConfiguration : Autofac.Module
+    public class MySQLNHibernateConfiguration : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.Register(x => x.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerDependency();
+
             builder.Register((container) =>
             {
                 var settings = container.Resolve<IAppSettings>();
@@ -29,6 +31,10 @@ namespace ProjectA.Configuration.DI.Database
                 var configuration = container.Resolve<NHibernate.Cfg.Configuration>();
                 return BuildSessionFactory(configuration);
             }).As<ISessionFactory>().SingleInstance();
+
+            builder.Register(x => x.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(MySQLRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
 
             builder.Register((container) =>
             {
@@ -77,6 +83,7 @@ namespace ProjectA.Configuration.DI.Database
             });
 
             persistenceModel.UseOverridesFromAssembly(typeof(Entity).Assembly);
+            persistenceModel.Configure(config);
 
             //persistenceModel.WriteMappingsTo(@"C:\Users\vojda\Desktop\ProjectA");
 

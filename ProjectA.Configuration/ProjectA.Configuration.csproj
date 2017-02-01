@@ -30,24 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    <Reference Include="Autofac, Version=4.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.3.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -61,10 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppSettings.cs" />
-    <Compile Include="DI\Database\NHibernateConfiguration.cs" />
     <Compile Include="DI\AutofacConfiguration.cs" />
-    <Compile Include="IAppSettings.cs" />
+    <Compile Include="DI\Framework\Logging\LoggingModule.cs" />
+    <Compile Include="DI\Framework\Messaging\MessagingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +59,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ProjectA.Configuration.Base\ProjectA.Configuration.Base.csproj">
+      <Project>{62F76C9B-826E-40CE-AA9A-79F630A0E328}</Project>
+      <Name>ProjectA.Configuration.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectA.Configuration.MongoDB\ProjectA.Configuration.MongoDB.csproj">
+      <Project>{10a38b7e-8795-4ad9-84bc-c6937b928b69}</Project>
+      <Name>ProjectA.Configuration.MongoDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectA.Configuration.MySQL\ProjectA.Configuration.MySQL.csproj">
+      <Project>{f1af581b-7669-44f0-8af5-3606f40e6956}</Project>
+      <Name>ProjectA.Configuration.MySQL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProjectA.Core\ProjectA.Core.csproj">
       <Project>{82308efc-1f19-4a37-8dc6-45cd07953aed}</Project>
       <Name>ProjectA.Core</Name>
@@ -85,6 +84,7 @@
       <Name>ProjectA.Services</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,7 +1,8 @@
 using Autofac;
 using Autofac.Core;
-using NHibernate;
 using ProjectA.Configuration;
+using ProjectA.Configuration.Base;
+using ProjectA.Configuration.MySQL.DI;
 using ProjectA.Core;
 using ProjectA.Framework.Logging;
 using ProjectA.Framework.Messaging;
@@ -14,26 +15,16 @@ namespace ProjectA.Configuration.DI
 {
     public static class AutofacConfiguration
     {
-        public static ContainerBuilder Load(ContainerBuilder builder)
+        public static ContainerBuilder Load(ContainerBuilder builder, IAppSettings settings)
         {
-            builder.RegisterType<AppSettings>().As<IAppSettings>().SingleInstance();
-            builder.RegisterType<DatabaseLogger>().As<ILogger>().InstancePerRequest();
-            builder.RegisterType<Dispatcher>().Named("dispatcher", typeof(IDispatcher)).InstancePerRequest();
-
-            builder
-                .RegisterAssemblyTypes(typeof(BaseHandler<,>).Assembly)
-                .Where(x => x.IsClosedTypeOf(typeof(BaseHandler<,>)))
-                .As(x => x.BaseType)
-                .InstancePerRequest();
-            builder
-                .RegisterAssemblyTypes(typeof(BaseValidator<,>).Assembly)
-                .Where(x => x.IsClosedTypeOf(typeof(BaseValidator<,>)))
-                .As(x => x.BaseType)
-                .InstancePerRequest();
-
-            builder.RegisterDecorator<IDispatcher>((x, inner) => new ExceptionLogger(inner, x.Resolve<ILogger>()), "dispatcher").InstancePerRequest();
+            builder.RegisterInstance(settings);
             builder.RegisterAssemblyModules(typeof(AutofacConfiguration).Assembly);
-            
+
+            if (settings.Database == Base.Types.DatabaseType.MySQL)
+            {
+                builder.RegisterAssemblyModules(typeof(MySQLNHibernateConfiguration).Assembly);
+            }
+
             return builder;
         }
     }
