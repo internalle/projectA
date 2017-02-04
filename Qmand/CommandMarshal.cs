@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Qmand.Executors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,19 +10,22 @@ namespace Qmand
 {
     public class CommandMarshal
     {
-        public static Dictionary<string, ConsoleCommand> Commands { get; set; } = new Dictionary<string, ConsoleCommand>();
+        internal static Dictionary<string, Type> Commands { get; set; } = new Dictionary<string, Type>();
 
-        public static void RegisterCommand(Type command)
+        internal static List<BaseExecutor> Executors => new List<BaseExecutor> { new HelpExecutor(), new RunExecutor() };
+
+        public static void RegisterCommand(Type commandType)
         {
-            var isCorrectType = command.IsSubclassOf(typeof(ConsoleCommand));
+            var isCorrectType = commandType.IsSubclassOf(typeof(ConsoleCommand));
 
             if (!isCorrectType)
             {
                 throw new InvalidCastException($"Expected command of type {typeof(ConsoleCommand)}");
             }
 
-            var instance = Activator.CreateInstance(command) as ConsoleCommand;
-            Commands.Add(instance.Name.ToLowerInvariant(), instance);
+            var commandInstance = Activator.CreateInstance(commandType) as ConsoleCommand;
+            
+            Commands.Add(commandInstance.Name.ToLowerInvariant(), commandType);
         }
 
         public static void RegisterCommandAssembly(Assembly assembly)
@@ -36,87 +40,20 @@ namespace Qmand
 
         public static void ExecuteCommandString(string command)
         {
-            if (IsRunnerCommand(command))
+            try
             {
-                var commandName = GetCommandName(command);
-                var commandParams = GetCommandParameters(command);
-
-                if (!Commands.ContainsKey(commandName))
+                command = command.ToLowerInvariant();
+                foreach (var executor in Executors)
                 {
-                    throw new Exception("Unknown command");
-                }
-
-                var instance = Commands[commandName];
-
-                if (!HasRequiredParameters(instance.ParametersDefinition, commandParams))
-                {
-                    throw new Exception("Required parameters are not defined");
-                }
-
-                if (!HasUnknownParameters(instance.ParametersDefinition, commandParams))
-                {
-                    throw new Exception("Some parameters are not defined");
-                }
-
-                instance.Parameters = commandParams;
-                instance.Run();
-            }
-        }
-
-        private static bool IsRunnerCommand(string command)
-        {
-            return command.StartsWith("run ");
-        }
-
-        private static string GetCommandName(string command)
-        {
-            return command.Replace("run ", "").Split(' ')[0];
-        }
-
-        private static Dictionary<string, string> GetCommandParameters(string command)
-        {
-            var parameters = new Dictionary<string, string>();
-
-            var parameterParts = command.Split(new string[] { "--" }, StringSplitOptions.RemoveEmptyEntries);
-            parameterParts = parameterParts.Skip(1).ToArray();
-
-            foreach (var parameterPart in parameterParts)
-            {
-                var paramName = parameterPart.Split(' ')[0];
-                var paramData = parameterPart.Replace(paramName, "").Trim(new char[] { ' ', '"' });
-                parameters.Add(paramName, paramData);
-            }
-
-            return parameters;
-        }
-
-        private static bool HasRequiredParameters(Dictionary<string, ParameterType> paramDefinitions, Dictionary<string, string> parameters)
-        {
-            foreach (var paramDefinition in paramDefinitions)
-            {
-                if (paramDefinition.Value == ParameterType.Required)
-                {
-                    if (!parameters.ContainsKey(paramDefinition.Key))
+                    if (executor.IsForThisExecutor(command))
                     {
-                        return false;
+                        executor.Execute(command);
                     }
                 }
-            }
-
-            return true;
-        }
-
-        private static bool HasUnknownParameters(Dictionary<string, ParameterType> paramDefinitions, Dictionary<string, string> parameters)
-        {
-            foreach (var parameter in parameters)
+            }catch(Exception ex)
             {
-                if (!paramDefinitions.ContainsKey(parameter.Key))
-                {
-                    return false;
-                }
+                Console.WriteLine(ex);
             }
-
-            return true;
         }
     }
 }

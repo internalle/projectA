@@ -12,7 +12,7 @@ namespace Qmand
 
         public abstract string Description { get; }
 
-        public abstract Dictionary<string, ParameterType> ParametersDefinition { get; }
+        public abstract Dictionary<string, Tuple<ParameterType, string>>  ParametersDefinition { get; }
 
         public Dictionary<string, string> Parameters { get; internal set; }
 

@@ -11,13 +11,13 @@ namespace ProjectA.Console.Commands
 {
     public class SeedCommand : ConsoleCommand
     {
-        public override string Description => "Seed command";
+        public override string Description => "Runs one specific seeder or every registered seeder";
 
         public override string Name => "seed";
 
-        public override Dictionary<string, ParameterType> ParametersDefinition => new Dictionary<string, ParameterType>
+        public override Dictionary<string, Tuple<ParameterType, string>> ParametersDefinition => new Dictionary<string, Tuple<ParameterType, string>>
         {
-            { "class", ParameterType.Optional }
+            { "class", new Tuple<ParameterType, string>(ParameterType.Optional, "A Type of specific seeder")}
         };
 
         public override void Run()

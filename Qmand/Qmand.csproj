@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseExecutor.cs" />
     <Compile Include="CommandMarshal.cs" />
     <Compile Include="ConsoleCommand.cs" />
+    <Compile Include="Executors\HelpExecutor.cs" />
+    <Compile Include="Executors\RunExecutor.cs" />
     <Compile Include="ParameterType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
