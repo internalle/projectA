@@ -339,3 +339,7 @@ build/
 ProjectA.Web/client/dist
 ProjectA.Web/AppSettings.Debug.config
 ProjectA.Web/AppSettings.Release.config
+ProjectA.Console/AppSettings.Debug.config
+ProjectA.Console/AppSettings.Release.config
+ProjectA.UnitTests/AppSettings.Debug.config
+ProjectA.UnitTests/AppSettings.Release.config
