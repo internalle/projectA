@@ -1,11 +1,14 @@
-﻿using ProjectA.Database;
+﻿using ProjectA.DatabaseSeeders;
 using Qmand;
+using Qmand.Commands;
 using QSeed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Qmand.Commands.Definition;
+using System.Reflection;
 
 namespace ProjectA.Console.Commands
 {
@@ -13,31 +16,50 @@ namespace ProjectA.Console.Commands
     {
         public override string Description => "Runs one specific seeder or every registered seeder";
 
-        public override string Name => "seed";
+        public override string Name => "seeder";
 
-        public override Dictionary<string, Tuple<ParameterType, string>> ParametersDefinition => new Dictionary<string, Tuple<ParameterType, string>>
+        public override List<CommandParameter> ParametersDefinition => new List<CommandParameter>
         {
-            { "class", new Tuple<ParameterType, string>(ParameterType.Optional, "A Type of specific seeder")}
+            new CommandParameter { Name = "class", Description = "A type of seeder", Type = ParameterType.Optional }
         };
 
         public override void Run()
         {
-            var seedClassName = Parameters.ContainsKey("class") ? Parameters["class"] : null;
+            var seedClassName = GetParametar("class");
+            
+            var repoType = typeof(Repository<>);
+            var masterSeederType = typeof(DatabaseSeeder);
+            var rootAssembly = masterSeederType.Assembly;
+
+            SeedersRunner seederRunner = null;
 
             if (string.IsNullOrEmpty(seedClassName))
             {
-                new SeedersRunner(typeof(Repository<>), masterSeederType: typeof(DatabaseSeeder))
-                    .RegisterSeedersAssembly(typeof(DatabaseSeeder).Assembly)
-                    .RegisterFactoriesAssembly(typeof(DatabaseSeeder).Assembly)
-                    .Run();
-            }else
-            {
-                var seederType = typeof(DatabaseSeeder).Assembly.GetExportedTypes().FirstOrDefault(x=>x.Name == seedClassName);
-                new SeedersRunner(typeof(Repository<>))
-                    .RegisterSeederType(seederType)
-                    .RegisterFactoriesAssembly(typeof(DatabaseSeeder).Assembly)
-                    .Run();
+                seederRunner = new SeedersRunner(repoType, masterSeederType: masterSeederType);
+                seederRunner.RegisterSeedersAssembly(rootAssembly);
             }
+            else
+            {
+                var seederType = GetSpecificSeeder(rootAssembly, seedClassName);
+                seederRunner = new SeedersRunner(repoType);
+                seederRunner.RegisterSeederType(seederType);
+            }
+
+            seederRunner
+                .RegisterFactoriesAssembly(rootAssembly)
+                .Run();
+        }
+
+        private Type GetSpecificSeeder(Assembly haystackAssembly, string seedClassName)
+        {
+            var result = haystackAssembly.GetExportedTypes().FirstOrDefault(x => x.Name == seedClassName);
+
+            if (result == default(Type))
+            {
+                throw new NullReferenceException($"Seeder of type {seedClassName} does not exist");
+            }
+
+            return result;
         }
     }
 }

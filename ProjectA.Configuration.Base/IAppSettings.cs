@@ -1,4 +1,4 @@
-using ProjectA.Configuration.Base.Types;
+using ProjectA.Configuration.Base.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,9 @@ namespace ProjectA.Configuration.Base
 {
     public interface IAppSettings
     {
-        string ConnectionString { get; }
+        string MySqlConnectionString { get; }
+
+        string MongoDBConnectionString { get; }
 
         DatabaseType Database { get; }
 

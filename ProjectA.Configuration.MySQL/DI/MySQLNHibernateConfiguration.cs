@@ -19,7 +19,6 @@ namespace ProjectA.Configuration.MySQL.DI
     {
         protected override void Load(ContainerBuilder builder)
         {
-
             builder.Register((container) =>
             {
                 var settings = container.Resolve<IAppSettings>();
@@ -39,18 +38,20 @@ namespace ProjectA.Configuration.MySQL.DI
             builder.Register((container) =>
             {
                 var configuration = container.Resolve<NHibernate.Cfg.Configuration>();
-                return BuildPersistenceModel(configuration);
-            }).As<AutoPersistenceModel>().SingleInstance();
+                var model = BuildPersistenceModel(configuration);
+                model.Configure(configuration);
+                return model;
+            }).As<AutoPersistenceModel>().SingleInstance().AutoActivate();
         }
 
         private NHibernate.Cfg.Configuration BuildConfiguration(IAppSettings appSettings)
         {
             var config = Fluently.Configure()
-                .Database(MySQLConfiguration.Standard.ConnectionString(appSettings.ConnectionString))
+                .Database(MySQLConfiguration.Standard.ConnectionString(appSettings.MySqlConnectionString))
                 .ExposeConfiguration(c => c.SetProperty(Environment.ReleaseConnections, "on_close"))
                 .ExposeConfiguration(c => c.SetProperty(Environment.ProxyFactoryFactoryClass, typeof(NHibernate.Bytecode.DefaultProxyFactoryFactory).AssemblyQualifiedName))
                 .ExposeConfiguration(c => c.SetProperty(Environment.Hbm2ddlAuto, "update"))
-                .ExposeConfiguration(c => c.SetProperty(Environment.ShowSql, "true"))
+                //.ExposeConfiguration(c => c.SetProperty(Environment.ShowSql, "true"))
                 .ExposeConfiguration(BuildSchema)
                 .BuildConfiguration();
 

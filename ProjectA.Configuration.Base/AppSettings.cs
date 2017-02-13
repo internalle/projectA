@@ -1,16 +1,13 @@
-using ProjectA.Configuration.Base.Types;
-using System;
-using System.Collections.Generic;
+using ProjectA.Configuration.Base.Enums;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectA.Configuration.Base
 {
     public class AppSettings : IAppSettings
     {
-        public string ConnectionString => ConfigurationManager.AppSettings["ConnectionString"];
+        public string MySqlConnectionString => ConfigurationManager.AppSettings["MySqlConnectionString"];
+
+        public string MongoDBConnectionString => ConfigurationManager.AppSettings["MongoDBConnectionString"];
 
         public DatabaseType Database => DatabaseTypeHelper.FromString(ConfigurationManager.AppSettings["Database"]);
 

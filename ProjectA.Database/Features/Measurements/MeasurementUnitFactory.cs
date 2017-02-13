@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using QSeed.Config;
 
-namespace ProjectA.Seeders.Features.Measurements
+namespace ProjectA.DatabaseSeeders.Features.Measurements
 {
     public class MeasurementUnitFactory : ModelFactory<MeasurementUnit>
     {

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Qmand.Commands;
+using Qmand.Commands.Definition;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Qmand
+namespace Qmand.Executors
 {
     public abstract class BaseExecutor
     {
@@ -12,19 +14,25 @@ namespace Qmand
 
         protected abstract bool ShouldHaveCommand { get; }
 
+        protected Action<object> Output { get; private set; }
+
+        internal void SetOutput(Action<object> output) { Output = output; }
+
+        internal Dictionary<string, Type> Commands { get; set; }
+
         public abstract void Execute(string command);
 
-        protected virtual ConsoleCommand GetConsoleCommand(string command)
+        protected virtual ConsoleCommand GetConsoleCommand(string line)
         {
-            var commandName = GetCommandName(command);
-            var commandParams = GetCommandParameters(command);
+            var commandName = GetCommandName(line);
+            var commandParams = GetCommandParameters(line);
 
-            if (!CommandMarshal.Commands.ContainsKey(commandName))
+            if (!Commands.ContainsKey(commandName))
             {
                 throw new Exception("Unknown command");
             }
 
-            var instance = Activator.CreateInstance(CommandMarshal.Commands[commandName]) as ConsoleCommand;
+            var instance = Activator.CreateInstance(Commands[commandName]) as ConsoleCommand;
 
             if (!HasRequiredParameters(instance.ParametersDefinition, commandParams))
             {
@@ -72,13 +80,13 @@ namespace Qmand
             return parameters;
         }
 
-        private bool HasRequiredParameters(Dictionary<string, Tuple<ParameterType, string>> paramDefinitions, Dictionary<string, string> parameters)
+        private bool HasRequiredParameters(List<CommandParameter> paramDefinitions, Dictionary<string, string> parameters)
         {
             foreach (var paramDefinition in paramDefinitions)
             {
-                if (paramDefinition.Value.Item1 == ParameterType.Required)
+                if (paramDefinition.Type == ParameterType.Required)
                 {
-                    if (!parameters.ContainsKey(paramDefinition.Key))
+                    if (!parameters.ContainsKey(paramDefinition.Name))
                     {
                         return false;
                     }
@@ -88,11 +96,11 @@ namespace Qmand
             return true;
         }
 
-        private bool HasUnknownParameters(Dictionary<string, Tuple<ParameterType, string>> paramDefinitions, Dictionary<string, string> parameters)
+        private bool HasUnknownParameters(List<CommandParameter> paramDefinitions, Dictionary<string, string> parameters)
         {
             foreach (var parameter in parameters)
             {
-                if (!paramDefinitions.ContainsKey(parameter.Key))
+                if (!paramDefinitions.Any(x=>x.Name == parameter.Key))
                 {
                     return false;
                 }

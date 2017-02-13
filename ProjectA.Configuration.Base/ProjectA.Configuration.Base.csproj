@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
-    <Compile Include="Types\DatabaseType.cs" />
+    <Compile Include="Enums\DatabaseType.cs" />
     <Compile Include="IAppSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -51,6 +51,9 @@
       <Project>{82308EFC-1F19-4A37-8DC6-45CD07953AED}</Project>
       <Name>ProjectA.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

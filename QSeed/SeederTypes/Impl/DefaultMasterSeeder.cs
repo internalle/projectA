@@ -14,7 +14,7 @@ namespace QSeed.SeederTypes.Impl
     {
         public override void Run()
         {
-            foreach (var seeder in _actuator.SeederTypes)
+            foreach (var seeder in _factory.SeederTypes)
             {
                 RunSeeder(seeder);
             }

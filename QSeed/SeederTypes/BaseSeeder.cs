@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace QSeed.SeederTypes
 {
-    public abstract class BaseSeeder : HasActuator
+    public abstract class BaseSeeder : HasFactory
     {
         public abstract void Run();
 
-        public IRepository<T> GetRepository<T>() => _actuator.GetRepositoryInstance<T>();
+        public IRepository<T> GetRepository<T>() => _factory.GetRepositoryInstance<T>();
 
-        public ModelFactory<T> GetModelFactory<T>() => _actuator.GetModalFactoryInstance<T>();
+        public ModelFactory<T> GetModelFactory<T>() => _factory.GetModalFactoryInstance<T>();
     }
 }

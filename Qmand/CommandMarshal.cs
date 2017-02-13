@@ -1,4 +1,6 @@
-﻿using Qmand.Executors;
+﻿using Qmand.Commands;
+using Qmand.Executors;
+using Qmand.Executors.Impl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +12,24 @@ namespace Qmand
 {
     public class CommandMarshal
     {
-        internal static Dictionary<string, Type> Commands { get; set; } = new Dictionary<string, Type>();
+        internal Action<object> Output { get; set; }
 
-        internal static List<BaseExecutor> Executors => new List<BaseExecutor> { new HelpExecutor(), new RunExecutor() };
+        internal Dictionary<string, Type> Commands { get; set; }
 
-        public static void RegisterCommand(Type commandType)
+        internal List<Type> Executors { get; set; }
+
+        public CommandMarshal(Action<object> output = null)
+        {
+            Output = output ?? Console.WriteLine;
+            Commands = new Dictionary<string, Type>();
+            Executors = new List<Type>
+            {
+                typeof(RunExecutor),
+                typeof(HelpExecutor)
+            };
+        }
+
+        public void RegisterCommand(Type commandType)
         {
             var isCorrectType = commandType.IsSubclassOf(typeof(ConsoleCommand));
 
@@ -28,7 +43,7 @@ namespace Qmand
             Commands.Add(commandInstance.Name.ToLowerInvariant(), commandType);
         }
 
-        public static void RegisterCommandAssembly(Assembly assembly)
+        public void RegisterCommandAssembly(Assembly assembly)
         {
             var commandTypes = assembly.GetExportedTypes().Where(x => x.IsSubclassOf(typeof(ConsoleCommand))).ToList();
 
@@ -38,22 +53,31 @@ namespace Qmand
             }
         }
 
-        public static void ExecuteCommandString(string command)
+        public void ExecuteCommandString(string command)
         {
             try
             {
-                command = command.ToLowerInvariant();
                 foreach (var executor in Executors)
                 {
-                    if (executor.IsForThisExecutor(command))
+                    var instance = CreateExecutorInstance(executor);
+                    if (instance.IsForThisExecutor(command))
                     {
-                        executor.Execute(command);
+                        instance.Execute(command);
                     }
                 }
             }catch(Exception ex)
             {
-                Console.WriteLine(ex);
+                Output.Invoke(ex);
             }
+        }
+
+        private BaseExecutor CreateExecutorInstance(Type executorType)
+        {
+            var instance = Activator.CreateInstance(executorType) as BaseExecutor;
+            instance.Commands = Commands;
+            instance.SetOutput(Output);
+
+            return instance;
         }
     }
 }

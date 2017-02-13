@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Qmand.Executors
+namespace Qmand.Executors.Impl
 {
     public class RunExecutor : BaseExecutor
     {

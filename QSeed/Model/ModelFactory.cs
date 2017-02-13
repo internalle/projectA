@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QSeed.Model
 {
-    public abstract class ModelFactory<T> : HasActuator
+    public abstract class ModelFactory<T> : HasFactory
     {
         protected abstract T Build();
 
@@ -30,7 +30,7 @@ namespace QSeed.Model
         public T PersistInstance()
         {
             T instance = CreateInstance();
-            _actuator.GetRepositoryInstance<T>().Save(instance);
+            _factory.GetRepositoryInstance<T>().Save(instance);
             return instance;
         }
 

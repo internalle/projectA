@@ -1,5 +1,6 @@
 ﻿using QSeed.Config;
 using QSeed.Model;
+using QSeed.ReflectionExtensions;
 using QSeed.Repository;
 using QSeed.SeederTypes;
 using QSeed.SeederTypes.Impl;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace QSeed
 {
-    public class Actuator
+    public class FactoryAndSeederFactory
     {
         internal Type RepositoryType { get; set; }
 
@@ -29,32 +30,32 @@ namespace QSeed
 
         public ModelFactory<T> GetModalFactoryInstance<T>()
         {
-            var genericType = ModelFactoryTypes.FirstOrDefault(x=>x.IsSubclassOf(typeof(ModelFactory<T>)));
+            var genericType = ModelFactoryTypes.FirstOrDefault(x => x.IsModelFactory<T>());
             var instance = Activator.CreateInstance(genericType) as ModelFactory<T>;
-            instance.SetActuator(this);
+            instance.SetFactory(this);
             return instance;
         }
 
         public MasterSeeder GetMasterSeederInstance()
         {
             var instance = Activator.CreateInstance(MasterSeederType) as MasterSeeder;
-            instance.SetActuator(this);
+            instance.SetFactory(this);
             return instance;
         }
 
         public IEnumerable<BaseSeeder> GetAllSeederInstances()
         {
-            foreach(var seederType in SeederTypes)
+            foreach (var seederType in SeederTypes)
             {
                 var instance = Activator.CreateInstance(seederType) as BaseSeeder;
-                instance.SetActuator(this);
+                instance.SetFactory(this);
                 yield return instance;
             }
         }
 
-        internal static Actuator FromConfiguration(Configuration conf)
+        internal static FactoryAndSeederFactory FromConfiguration(Configuration conf)
         {
-            var actuator = new Actuator
+            var factory = new FactoryAndSeederFactory
             {
                 RepositoryType = conf.Repository,
                 MasterSeederType = conf.MasterSeeder,
@@ -63,25 +64,36 @@ namespace QSeed
 
             };
 
-            if (actuator.RepositoryType == default(Type))
+            factory.RepositoryType = ForceImplementation(factory.RepositoryType, default(Type), () => {
+                return factory.RepositoryType.IsRepository();
+            });
+
+            factory.MasterSeederType = ForceImplementation(factory.MasterSeederType, typeof(DefaultMasterSeeder), () => {
+                return factory.MasterSeederType.IsMasterSeeder();
+            });
+
+            return factory;
+        }
+
+        private static Type ForceImplementation(Type registeredType, Type defaultAssign, Func<bool> expectedImplementationCheck)
+        {
+            if (registeredType == default(Type))
             {
-                throw new NullReferenceException("Repository implementation expected");
+                if (defaultAssign != default(Type))
+                {
+                    registeredType = defaultAssign;
+                }
+                else
+                {
+                    throw new NullReferenceException($"{defaultAssign.FullName} implementation expected");
+                }
             }
-            else if (actuator.RepositoryType.GetInterface(typeof(IRepository<>).Name) == default(Type))
+            else if (!expectedImplementationCheck.Invoke())
             {
-                throw new InvalidCastException("IRepository<T> implementation expected");
+                throw new NullReferenceException($"{defaultAssign.FullName} implementation expected");
             }
 
-            if (actuator.MasterSeederType == default(Type))
-            {
-                actuator.MasterSeederType = typeof(DefaultMasterSeeder);
-            }
-            else if (actuator.MasterSeederType.BaseType != typeof(MasterSeeder))
-            {
-                throw new InvalidCastException("MasterSeeder implementation expected");
-            }
-
-            return actuator;
+            return registeredType;
         }
     }
 }

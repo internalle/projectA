@@ -15,7 +15,7 @@ namespace QSeed.SeederTypes
         public void RunSeeder(Type seederType)
         {
             var seeder = Activator.CreateInstance(seederType) as BaseSeeder;
-            seeder.SetActuator(_actuator);
+            seeder.SetFactory(_factory);
             seeder.Run();
         }
     }

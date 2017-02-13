@@ -40,12 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseExecutor.cs" />
+    <Compile Include="Commands\Definition\CommandParameter.cs" />
+    <Compile Include="Executors\BaseExecutor.cs" />
     <Compile Include="CommandMarshal.cs" />
-    <Compile Include="ConsoleCommand.cs" />
-    <Compile Include="Executors\HelpExecutor.cs" />
-    <Compile Include="Executors\RunExecutor.cs" />
-    <Compile Include="ParameterType.cs" />
+    <Compile Include="Commands\ConsoleCommand.cs" />
+    <Compile Include="Executors\Impl\HelpExecutor.cs" />
+    <Compile Include="Executors\Impl\RunExecutor.cs" />
+    <Compile Include="Commands\Definition\ParameterType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

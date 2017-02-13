@@ -20,15 +20,8 @@ namespace ProjectA.Web
     {
         private void BootDI()
         {
-            var builder = new ContainerBuilder();
-            builder.RegisterControllers();
-            builder = AutofacConfiguration.Load(builder, new AppSettings());
-            var container = builder.Build();
-            
-
+            var container = ConfigurationBootstraper.Load(new ContainerBuilder(), new AppSettings());
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
-            ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
-            ServiceLocator.Current.GetInstance<AutoPersistenceModel>();
         }
 
         protected void Application_Start()

@@ -10,9 +10,14 @@ using ProjectA.Core;
 
 namespace ProjectA.Configuration.MySQL.Repository
 {
-    public class MySQLRepository<T> : IRepository<T> where T : Entity
+    public class MySQLRepository<T> : IRepository<T> where T : ActiveRecord<T>
     {
-        protected static ISession _session => ServiceLocator.Current.GetInstance<ISession>();
+        protected ISession _session;
+
+        public MySQLRepository(ISession session)
+        {
+            _session = session;
+        }
 
         public IList<T> Query(Expression<Func<T, bool>> predicate = null, int skip = 0, int take = int.MaxValue)
         {

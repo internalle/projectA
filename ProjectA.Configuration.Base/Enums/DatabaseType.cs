@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectA.Configuration.Base.Types
+namespace ProjectA.Configuration.Base.Enums
 {
     public enum DatabaseType
     {
@@ -15,15 +15,15 @@ namespace ProjectA.Configuration.Base.Types
     {
         public static DatabaseType FromString(string dbType)
         {
-            switch (dbType)
+            switch (dbType.ToLowerInvariant())
             {
-                case "MySQL":
+                case "mysql":
                     return DatabaseType.MySQL;
-                case "MsSQL":
+                case "mssql":
                     return DatabaseType.MsSQL;
-                case "PostgreSQL":
+                case "postgresql":
                     return DatabaseType.PostgreSQL;
-                case "MongoDB":
+                case "mongodb":
                     return DatabaseType.MongoDB;
                 default:
                     return DatabaseType.MySQL;

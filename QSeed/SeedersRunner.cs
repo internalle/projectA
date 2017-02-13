@@ -1,5 +1,6 @@
 ﻿using QSeed.Config;
 using QSeed.Model;
+using QSeed.ReflectionExtensions;
 using QSeed.SeederTypes;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace QSeed
 
         public SeedersRunner RegisterSeedersAssembly(Assembly assembly)
         {
-            var scannedSeeders = assembly.GetExportedTypes().Where(x => x.IsSubclassOf(typeof(BaseSeeder)));
+            var scannedSeeders = assembly.GetExportedTypes().Where(x => x.IsBaseSeeder());
             foreach(var seeder in scannedSeeders)
             {
                 RegisterSeederType(seeder);
@@ -43,7 +44,7 @@ namespace QSeed
 
         public SeedersRunner RegisterSeederType(Type seederType)
         {
-            if (seederType == default(Type) || !seederType.IsSubclassOf(typeof(BaseSeeder)))
+            if (seederType == default(Type) || !seederType.IsBaseSeeder())
             {
                 throw new InvalidCastException($"{typeof(BaseSeeder).FullName} expected");
             }
@@ -54,7 +55,7 @@ namespace QSeed
 
         public SeedersRunner RegisterFactoriesAssembly(Assembly assembly)
         {
-            var scannedModelFactories = assembly.GetExportedTypes().Where(x => x.BaseType.Name == (typeof(ModelFactory<>).Name));
+            var scannedModelFactories = assembly.GetModelFactoryTypes();
             foreach (var factory in scannedModelFactories)
             {
                 RegisterFactoryType(factory);
@@ -65,7 +66,7 @@ namespace QSeed
 
         public SeedersRunner RegisterFactoryType(Type factoryType)
         {
-            if (factoryType == default(Type) || factoryType.BaseType.Name != (typeof(ModelFactory<>).Name))
+            if (factoryType == default(Type) || !factoryType.IsModelFactory())
             {
                 throw new InvalidCastException($"{typeof(ModelFactory<>).FullName} expected");
             }
@@ -79,9 +80,9 @@ namespace QSeed
             _seederTypes = _seederTypes.Distinct().ToList();
             _factoryTypes = _factoryTypes.Distinct().ToList();
 
-            var _actuator = Actuator.FromConfiguration(_conf);
+            var _factory = FactoryAndSeederFactory.FromConfiguration(_conf);
 
-            _actuator.GetMasterSeederInstance().Run();
+            _factory.GetMasterSeederInstance().Run();
         }
     }
 }

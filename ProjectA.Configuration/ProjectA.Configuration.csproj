@@ -34,6 +34,14 @@
       <HintPath>..\packages\Autofac.4.3.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Autofac.Extras.CommonServiceLocator, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.CommonServiceLocator.4.0.0\lib\portable40-net40+sl5+win8+wp8+wpa81\Autofac.Extras.CommonServiceLocator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
       <Private>True</Private>
@@ -49,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DI\AutofacConfiguration.cs" />
+    <Compile Include="DI\ConfigurationBootstraper.cs" />
     <Compile Include="DI\Framework\Logging\LoggingModule.cs" />
     <Compile Include="DI\Framework\Messaging\MessagingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,9 +71,9 @@
       <Project>{62F76C9B-826E-40CE-AA9A-79F630A0E328}</Project>
       <Name>ProjectA.Configuration.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ProjectA.Configuration.MongoDB\ProjectA.Configuration.MongoDB.csproj">
+    <ProjectReference Include="..\ProjectA.Configuration.MongoDB\ProjectA.Configuration.Mongo.csproj">
       <Project>{10a38b7e-8795-4ad9-84bc-c6937b928b69}</Project>
-      <Name>ProjectA.Configuration.MongoDB</Name>
+      <Name>ProjectA.Configuration.Mongo</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProjectA.Configuration.MySQL\ProjectA.Configuration.MySQL.csproj">
       <Project>{f1af581b-7669-44f0-8af5-3606f40e6956}</Project>

@@ -1,4 +1,4 @@
-﻿using ProjectA.Seeders.Features.Measurements;
+﻿using ProjectA.DatabaseSeeders.Features.Measurements;
 using QSeed;
 using QSeed.SeederTypes;
 using System;
@@ -10,7 +10,7 @@ using QSeed.Config;
 using ProjectA.Configuration.Base;
 using Microsoft.Practices.ServiceLocation;
 
-namespace ProjectA.Database
+namespace ProjectA.DatabaseSeeders
 {
     public class DatabaseSeeder : MasterSeeder
     {

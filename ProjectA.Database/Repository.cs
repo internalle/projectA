@@ -9,12 +9,12 @@ using ProjectA.Core;
 using QSeed.Repository;
 using Microsoft.Practices.ServiceLocation;
 
-namespace ProjectA.Database
+namespace ProjectA.DatabaseSeeders
 {
     public class Repository<T> : QSeed.Repository.IRepository<T> where T : Entity
     {
         private Core.IRepository<T> _repo => ServiceLocator.Current.GetInstance<Core.IRepository<T>>();
-
+        
         public void Save(T obj)
         {
             _repo.Save(obj);
