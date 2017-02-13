@@ -9,7 +9,6 @@ using Microsoft.Practices.ServiceLocation;
 using ProjectA.Core.Features.Measurements;
 using ProjectA.Core;
 using System.Reflection;
-using MongoRepository;
 
 namespace ProjectA.Core
 {

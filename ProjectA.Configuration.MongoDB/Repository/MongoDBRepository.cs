@@ -7,6 +7,7 @@ using ProjectA.Configuration.Mongo.Repository;
 using ProjectA.Core;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace ProjectA.Configuration.Mongo.Repository
 {
-    public class MongoRecordWrapper<T> : IEntity<int> where T : ActiveRecord<T>
+    public class MongoRecordWrapper<T> : IEntity<int> where T : Core.Entity
     {
         private static int ID = 0;
 
@@ -29,8 +30,8 @@ namespace ProjectA.Configuration.Mongo.Repository
         
         public int Id { get; set; }
     }
-
-    public class MongoDBRepository<T> : Core.IRepository<T> where T : ActiveRecord<T>
+    
+    public class MongoDBRepository<T> : Core.IRepository<T> where T : Core.Entity
     {
         protected MongoRepository<MongoRecordWrapper<T>, int> _repository;
 
@@ -56,7 +57,7 @@ namespace ProjectA.Configuration.Mongo.Repository
 
         public IList<T> Query(Expression<Func<T, bool>> predicate = null, int skip = 0, int take = int.MaxValue)
         {
-            return _repository.Where(x => true).Skip(skip).Take(take).Select(x => x.Data).ToList();
+            return _repository.Select(x=>x.Data).Where(predicate).Skip(skip).Take(take).ToList();
         }
 
         public void Save(T obj)

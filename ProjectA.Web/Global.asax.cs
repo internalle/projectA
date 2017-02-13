@@ -1,5 +1,4 @@
 using Autofac;
-using Autofac.Extras.CommonServiceLocator;
 using Autofac.Integration.Mvc;
 using FluentNHibernate.Automapping;
 using Microsoft.Practices.ServiceLocation;
