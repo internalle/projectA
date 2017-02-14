@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Qmand.Commands.Definition
+namespace QMand.Commands.Definition
 {
     public enum ParameterType
     {

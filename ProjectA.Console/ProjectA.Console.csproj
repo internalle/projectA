@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\SeedCommand.cs" />
+    <Compile Include="Commands\YoutubeCrawler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -94,9 +95,13 @@
       <Project>{F7EAD7B8-5D5C-4AA4-A70D-110493279EC3}</Project>
       <Name>ProjectA.DatabaseSeeders</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Qmand\Qmand.csproj">
+    <ProjectReference Include="..\Qmand\QMand.csproj">
       <Project>{6ff3ed98-2cc7-4297-b454-35b60086d89c}</Project>
-      <Name>Qmand</Name>
+      <Name>QMand</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QRoller\QRoller.csproj">
+      <Project>{788E9746-2081-4A3D-823A-F190A65554F8}</Project>
+      <Name>QRoller</Name>
     </ProjectReference>
     <ProjectReference Include="..\QSeed\QSeed.csproj">
       <Project>{CBEA7244-F678-4E87-80A9-7B7ED51FC268}</Project>

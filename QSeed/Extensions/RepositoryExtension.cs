@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QSeed.ReflectionExtensions
+namespace QSeed.Extensions
 {
     public static class RepositoryExtension
     {

@@ -1,6 +1,6 @@
 ﻿using QSeed.Config;
 using QSeed.Model;
-using QSeed.ReflectionExtensions;
+using QSeed.Extensions;
 using QSeed.Repository;
 using QSeed.SeederTypes;
 using QSeed.SeederTypes.Impl;

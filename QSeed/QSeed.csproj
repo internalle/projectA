@@ -41,11 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FactoryAndSeederFactory.cs" />
-    <Compile Include="ReflectionExtensions\BaseExtension.cs" />
-    <Compile Include="ReflectionExtensions\FactoryExtension.cs" />
+    <Compile Include="Extensions\BaseExtension.cs" />
+    <Compile Include="Extensions\FactoryExtension.cs" />
     <Compile Include="HasFactory.cs" />
-    <Compile Include="ReflectionExtensions\RepositoryExtension.cs" />
-    <Compile Include="ReflectionExtensions\SeederExtension.cs" />
+    <Compile Include="Extensions\RepositoryExtension.cs" />
+    <Compile Include="Extensions\SeederExtension.cs" />
     <Compile Include="SeederTypes\Impl\DefaultMasterSeeder.cs" />
     <Compile Include="SeederTypes\MasterSeeder.cs" />
     <Compile Include="Model\ModelFactory.cs" />

@@ -1,13 +1,13 @@
 ﻿using ProjectA.DatabaseSeeders;
-using Qmand;
-using Qmand.Commands;
+using QMand;
+using QMand.Commands;
 using QSeed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Qmand.Commands.Definition;
+using QMand.Commands.Definition;
 using System.Reflection;
 
 namespace ProjectA.Console.Commands

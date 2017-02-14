@@ -3,8 +3,9 @@ using FluentNHibernate.Automapping;
 using Microsoft.Practices.ServiceLocation;
 using ProjectA.Configuration.Base;
 using ProjectA.Configuration.DI;
-using Qmand;
+using QMand;
 using ProjectA.Configuration.Base.Enums;
+using System;
 
 namespace ProjectA.Console
 {
@@ -18,13 +19,25 @@ namespace ProjectA.Console
         static void Main(string[] args)
         {
             BootDI();
+
             var marshal = new CommandMarshal();
             marshal.RegisterCommandAssembly(typeof(Program).Assembly);
 
-            while (true)
+            if (args.Length > 0)
             {
-                var line = System.Console.ReadLine();
-                marshal.ExecuteCommandString(line);
+                foreach (var line in args)
+                {
+                    marshal.ExecuteCommandString(line);
+                }
+            }
+            else
+            {
+                while (true)
+                {
+                    System.Console.Write(">");
+                    var line = System.Console.ReadLine();
+                    marshal.ExecuteCommandString(line);
+                }
             }
         }
     }

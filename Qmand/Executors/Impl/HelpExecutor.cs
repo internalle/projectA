@@ -1,53 +1,104 @@
-﻿using Qmand.Commands.Definition;
+﻿using QMand.Commands.Definition;
+using QMand.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Qmand.Executors.Impl
+namespace QMand.Executors.Impl
 {
-    public class HelpExecutor : BaseExecutor
+    public class HelpExecutor : Executor
     {
-        protected override string ExecutorName => "help";
+        public override string Name => "help";
 
-        protected override bool ShouldHaveCommand => true;
+        public override string Description => 
+@"Display general or specific help for commands and executors
 
-        public override void Execute(string command)
+help [<CommandOrExecutorName>]";
+
+        public override void Execute(string line)
         {
-            var commandInstance = GetConsoleCommand(command);
+            Output.Invoke("");
+            if (!string.IsNullOrEmpty(line.GetCommandName()))
+            {
+                try
+                {
+                    HelpForCommand(line);
+                }
+                catch
+                {
+                    HelpForExecutor(line);
+                }
+            }
+            else
+            {
+                GeneralHelp();
+            }
+            Output.Invoke("");
+        }
+
+        private void GeneralHelp()
+        {
+            Output.Invoke("List of executors:");
+            foreach (var executor in Executors)
+            {
+                Output.Invoke(executor.Key);
+            }
+            Output.Invoke("");
+            Output.Invoke("help <executor>, for more help for a specific executor");
 
             Output.Invoke("");
+            Output.Invoke("");
+
+            Output.Invoke("List of commands:");
+            foreach (var command in Commands)
+            {
+                Output.Invoke(command.Key);
+            }
+            Output.Invoke("");
+            Output.Invoke("help <command>, for more help for a specific command");
+        }
+
+        private void HelpForCommand(string line)
+        {
+            var commandInstance = GetConsoleCommand(line);
+            
             Output.Invoke($"{commandInstance.Description}");
 
             Output.Invoke("");
             Output.Invoke("Example:");
-            Output.Invoke($"{commandInstance.Name}");
+
+            string commandExample = commandInstance.Name;
 
             foreach (var requiredParam in commandInstance.ParametersDefinition.Where(x => x.Type == ParameterType.Required))
             {
-                Output.Invoke($" --{requiredParam.Name} <Value>");
+                commandExample += $" --{requiredParam.Name} <Value>";
             }
 
-            foreach (var requiredParam in commandInstance.ParametersDefinition.Where(x => x.Type == ParameterType.Optional))
+            foreach (var optionalParam in commandInstance.ParametersDefinition.Where(x => x.Type == ParameterType.Optional))
             {
-                Output.Invoke($" --{requiredParam.Name} <Value>");
+                commandExample += $" --{optionalParam.Name} <Value>";
             }
 
+            Output.Invoke(commandExample);
             Output.Invoke("");
             foreach (var requiredParam in commandInstance.ParametersDefinition.Where(x => x.Type == ParameterType.Required))
             {
-                Output.Invoke("");
-                Output.Invoke($"--{requiredParam.Name} is requred");
-                Output.Invoke($"{requiredParam.Description}");
+                Output.Invoke($"--{requiredParam.Name} is requred, {requiredParam.Description}");
             }
 
-            foreach (var requiredParam in commandInstance.ParametersDefinition.Where(x => x.Type == ParameterType.Optional))
+            foreach (var optionalParam in commandInstance.ParametersDefinition.Where(x => x.Type == ParameterType.Optional))
             {
-                Output.Invoke("");
-                Output.Invoke($"--{requiredParam.Name} is optional");
-                Output.Invoke($"{requiredParam.Description}");
+                Output.Invoke($"--{optionalParam.Name} is optional, { optionalParam.Description}");
             }
+        }
+
+        private void HelpForExecutor(string line)
+        {
+            var commandInstance = GetExecutor(line);
+            
+            Output.Invoke($"{commandInstance.Description}");
         }
     }
 }

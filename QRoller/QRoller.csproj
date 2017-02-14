@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6FF3ED98-2CC7-4297-B454-35B60086D89C}</ProjectGuid>
+    <ProjectGuid>{788E9746-2081-4A3D-823A-F190A65554F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QMand</RootNamespace>
-    <AssemblyName>QMand</AssemblyName>
+    <RootNamespace>QRoller</RootNamespace>
+    <AssemblyName>QRoller</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.CssSelectors.1.0.2\lib\net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlAgilityPack.CssSelectors, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.CssSelectors.1.0.2\lib\net45\HtmlAgilityPack.CssSelectors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,18 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Definition\CommandParameter.cs" />
-    <Compile Include="Executors\Executor.cs" />
-    <Compile Include="CommandMarshal.cs" />
-    <Compile Include="Commands\ConsoleCommand.cs" />
-    <Compile Include="Executors\Impl\HelpExecutor.cs" />
-    <Compile Include="Executors\Impl\RepeatExecutor.cs" />
-    <Compile Include="Executors\Impl\ClsExecutor.cs" />
-    <Compile Include="Executors\Impl\ExitExecutor.cs" />
-    <Compile Include="Executors\Impl\RunExecutor.cs" />
-    <Compile Include="Commands\Definition\ParameterType.cs" />
-    <Compile Include="Extensions\StringLineExtensions.cs" />
+    <Compile Include="Crawler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

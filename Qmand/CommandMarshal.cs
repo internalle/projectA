@@ -1,6 +1,7 @@
-﻿using Qmand.Commands;
-using Qmand.Executors;
-using Qmand.Executors.Impl;
+﻿using QMand.Commands;
+using QMand.Executors;
+using QMand.Executors.Impl;
+using QMand.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Qmand
+namespace QMand
 {
     public class CommandMarshal
     {
@@ -16,41 +17,67 @@ namespace Qmand
 
         internal Dictionary<string, Type> Commands { get; set; }
 
-        internal List<Type> Executors { get; set; }
+        internal Dictionary<string, Type> Executors { get; set; }
 
         public CommandMarshal(Action<object> output = null)
         {
             Output = output ?? Console.WriteLine;
             Commands = new Dictionary<string, Type>();
-            Executors = new List<Type>
-            {
-                typeof(RunExecutor),
-                typeof(HelpExecutor)
-            };
+            Executors = new Dictionary<string, Type>();
+
+            Executors.Add(typeof(Executor)
+                .Assembly
+                .GetExportedTypes()
+                .Where(x => x.IsSubclassOf(typeof(Executor)))
+                .Select(x=> new KeyValuePair<string, Type>((Activator.CreateInstance(x) as Executor).Name, x)));
         }
 
-        public void RegisterCommand(Type commandType)
+        public void RegisterExecutor(Type type)
         {
-            var isCorrectType = commandType.IsSubclassOf(typeof(ConsoleCommand));
+            Register(Executors, type, typeof(Executor));
+        }
 
-            if (!isCorrectType)
+        public void RegisterExecutorAssembly(Assembly assembly)
+        {
+            foreach (var type in assembly.GetExportedTypes())
             {
-                throw new InvalidCastException($"Expected command of type {typeof(ConsoleCommand)}");
+                try
+                {
+                    RegisterExecutor(type);
+                }
+                catch { }
             }
+        }
 
-            var commandInstance = Activator.CreateInstance(commandType) as ConsoleCommand;
-            
-            Commands.Add(commandInstance.Name.ToLowerInvariant(), commandType);
+        public void RegisterCommand(Type type)
+        {
+            Register(Commands, type, typeof(ConsoleCommand));
         }
 
         public void RegisterCommandAssembly(Assembly assembly)
         {
-            var commandTypes = assembly.GetExportedTypes().Where(x => x.IsSubclassOf(typeof(ConsoleCommand))).ToList();
-
-            foreach (var commandType in commandTypes)
+            foreach (var type in assembly.GetExportedTypes())
             {
-                RegisterCommand(commandType);
+                try
+                {
+                    RegisterCommand(type);
+                }
+                catch { }
             }
+        }
+
+        private void Register(Dictionary<string, Type> haystack, Type toAdd, Type expectedType)
+        {
+            var isCorrectType = toAdd.IsSubclassOf(expectedType);
+
+            if (!isCorrectType)
+            {
+                throw new InvalidCastException($"Expected type {expectedType}");
+            }
+
+            var instance = Activator.CreateInstance(toAdd) as dynamic;
+
+            haystack.Add(instance.Name.ToLowerInvariant(), toAdd);
         }
 
         public void ExecuteCommandString(string command)
@@ -59,23 +86,25 @@ namespace Qmand
             {
                 foreach (var executor in Executors)
                 {
-                    var instance = CreateExecutorInstance(executor);
+                    var instance = CreateExecutorInstance(executor.Value);
                     if (instance.IsForThisExecutor(command))
                     {
                         instance.Execute(command);
                     }
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Output.Invoke(ex);
             }
         }
 
-        private BaseExecutor CreateExecutorInstance(Type executorType)
+        private Executor CreateExecutorInstance(Type executorType)
         {
-            var instance = Activator.CreateInstance(executorType) as BaseExecutor;
+            var instance = Activator.CreateInstance(executorType) as Executor;
             instance.Commands = Commands;
-            instance.SetOutput(Output);
+            instance.Executors = Executors;
+            instance.Output = Output;
 
             return instance;
         }
