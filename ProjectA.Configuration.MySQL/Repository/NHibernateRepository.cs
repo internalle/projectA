@@ -8,13 +8,13 @@ using NHibernate;
 using Microsoft.Practices.ServiceLocation;
 using ProjectA.Core;
 
-namespace ProjectA.Configuration.MySQL.Repository
+namespace ProjectA.Configuration.NHibernateORM.Repository
 {
-    public class MySQLRepository<T> : IRepository<T> where T : ActiveRecord<T>
+    public class NHibernateRepository<T> : IRepository<T> where T : ActiveRecord<T>
     {
         protected ISession _session;
 
-        public MySQLRepository(ISession session)
+        public NHibernateRepository(ISession session)
         {
             _session = session;
         }

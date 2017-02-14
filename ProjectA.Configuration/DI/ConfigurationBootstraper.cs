@@ -5,7 +5,7 @@ using Microsoft.Practices.ServiceLocation;
 using ProjectA.Configuration;
 using ProjectA.Configuration.Base;
 using ProjectA.Configuration.Mongo.DI;
-using ProjectA.Configuration.MySQL.DI;
+using ProjectA.Configuration.NHibernateORM.DI;
 using ProjectA.Core;
 using ProjectA.Framework.Logging;
 using ProjectA.Framework.Messaging;
@@ -25,7 +25,7 @@ namespace ProjectA.Configuration.DI
 
             if (settings.Database == Base.Enums.DatabaseType.MySQL)
             {
-                builder.RegisterAssemblyModules(typeof(MySQLNHibernateConfiguration).Assembly);
+                builder.RegisterAssemblyModules(typeof(NHibernateConfiguration).Assembly);
             }else if(settings.Database == Base.Enums.DatabaseType.MongoDB)
             {
                 builder.RegisterAssemblyModules(typeof(MongoConfiguration).Assembly);

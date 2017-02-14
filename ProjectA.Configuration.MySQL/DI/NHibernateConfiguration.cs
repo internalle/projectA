@@ -11,11 +11,11 @@ using System.Reflection;
 using FluentNHibernate.Conventions.Instances;
 using ProjectA.Core;
 using ProjectA.Configuration.Base;
-using ProjectA.Configuration.MySQL.Repository;
+using ProjectA.Configuration.NHibernateORM.Repository;
 
-namespace ProjectA.Configuration.MySQL.DI
+namespace ProjectA.Configuration.NHibernateORM.DI
 {
-    public class MySQLNHibernateConfiguration : Autofac.Module
+    public class NHibernateConfiguration : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -33,7 +33,7 @@ namespace ProjectA.Configuration.MySQL.DI
 
             builder.Register(x => x.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(MySQLRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
+            builder.RegisterGeneric(typeof(NHibernateRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
 
             builder.Register((container) =>
             {
@@ -47,7 +47,7 @@ namespace ProjectA.Configuration.MySQL.DI
         private NHibernate.Cfg.Configuration BuildConfiguration(IAppSettings appSettings)
         {
             var config = Fluently.Configure()
-                .Database(MySQLConfiguration.Standard.ConnectionString(appSettings.MySqlConnectionString))
+                .Database(SelectDatabaseType(appSettings))
                 .ExposeConfiguration(c => c.SetProperty(Environment.ReleaseConnections, "on_close"))
                 .ExposeConfiguration(c => c.SetProperty(Environment.ProxyFactoryFactoryClass, typeof(NHibernate.Bytecode.DefaultProxyFactoryFactory).AssemblyQualifiedName))
                 .ExposeConfiguration(c => c.SetProperty(Environment.Hbm2ddlAuto, "update"))
@@ -59,6 +59,24 @@ namespace ProjectA.Configuration.MySQL.DI
                 throw new System.Exception("Cannot build NHibernate configuration");
 
             return config;
+        }
+
+        private IPersistenceConfigurer SelectDatabaseType(IAppSettings settings)
+        {
+            if(settings.Database == Base.Enums.DatabaseType.MySQL)
+            {
+                return MySQLConfiguration.Standard.ConnectionString(settings.MySqlConnectionString);
+            }
+            else if (settings.Database == Base.Enums.DatabaseType.MsSQL)
+            {
+                //return MsSqlConfiguration.MsSql7.ConnectionString(settings.MySqlConnectionString);
+            }
+            else if (settings.Database == Base.Enums.DatabaseType.PostgreSQL)
+            {
+                //return PostgreSQLConfiguration.Standard.ConnectionString(settings.MySqlConnectionString);
+            }
+
+            return null;
         }
 
         private ISessionFactory BuildSessionFactory(NHibernate.Cfg.Configuration config)

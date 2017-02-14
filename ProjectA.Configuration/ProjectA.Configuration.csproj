@@ -75,9 +75,9 @@
       <Project>{10a38b7e-8795-4ad9-84bc-c6937b928b69}</Project>
       <Name>ProjectA.Configuration.Mongo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ProjectA.Configuration.MySQL\ProjectA.Configuration.MySQL.csproj">
+    <ProjectReference Include="..\ProjectA.Configuration.MySQL\ProjectA.Configuration.NHibernateORM.csproj">
       <Project>{f1af581b-7669-44f0-8af5-3606f40e6956}</Project>
-      <Name>ProjectA.Configuration.MySQL</Name>
+      <Name>ProjectA.Configuration.NHibernateORM</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProjectA.Core\ProjectA.Core.csproj">
       <Project>{82308efc-1f19-4a37-8dc6-45cd07953aed}</Project>

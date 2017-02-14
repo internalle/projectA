@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{38C7DC70-A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QSeed", "QSeed\QSeed.csproj", "{CBEA7244-F678-4E87-80A9-7B7ED51FC268}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectA.Configuration.MySQL", "ProjectA.Configuration.MySQL\ProjectA.Configuration.MySQL.csproj", "{F1AF581B-7669-44F0-8AF5-3606F40E6956}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectA.Configuration.NHibernateORM", "ProjectA.Configuration.MySQL\ProjectA.Configuration.NHibernateORM.csproj", "{F1AF581B-7669-44F0-8AF5-3606F40E6956}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectA.Configuration.Mongo", "ProjectA.Configuration.MongoDB\ProjectA.Configuration.Mongo.csproj", "{10A38B7E-8795-4AD9-84BC-C6937B928B69}"
 EndProject
