@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QMand.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,20 +19,13 @@ repeat <CommandName> [--<Param1Name> <Param1Value>, ...] --times <Value>, --time
 
         public override void Execute(string line)
         {
-            var command = GetConsoleCommand(line);
-
-            foreach(var urp in command.UndefinedRequiredParameters())
-            {
-                throw new ArgumentNullException(urp);
-            }
-
-            var times = int.Parse(GetParametar("times", "1"));
-            var timeout = Math.Max(int.Parse(GetParametar("timeout", "0")), 0);
+            var times = int.Parse(GetParameter("times", "1"));
+            var timeout = Math.Max(int.Parse(GetParameter("timeout", "0")), 0);
 
             for (int i = 0; i < times || times < 0; i++)
             {
                 Thread.Sleep(timeout);
-                command.Run();
+                Marshal.ExecuteCommandString($"run {line.GetRest()}");
             }
         }
     }

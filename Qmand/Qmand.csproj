@@ -44,7 +44,9 @@
     <Compile Include="Executors\Executor.cs" />
     <Compile Include="CommandMarshal.cs" />
     <Compile Include="Commands\ConsoleCommand.cs" />
+    <Compile Include="Executors\Impl\AsyncExecutor.cs" />
     <Compile Include="Executors\Impl\HelpExecutor.cs" />
+    <Compile Include="Executors\Impl\MacroExecutor.cs" />
     <Compile Include="Executors\Impl\RepeatExecutor.cs" />
     <Compile Include="Executors\Impl\ClsExecutor.cs" />
     <Compile Include="Executors\Impl\ExitExecutor.cs" />

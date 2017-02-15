@@ -80,16 +80,16 @@ namespace QMand
             haystack.Add(instance.Name.ToLowerInvariant(), toAdd);
         }
 
-        public void ExecuteCommandString(string command)
+        public void ExecuteCommandString(string line)
         {
             try
             {
                 foreach (var executor in Executors)
                 {
-                    var instance = CreateExecutorInstance(executor.Value);
-                    if (instance.IsForThisExecutor(command))
+                    var instance = CreateExecutorInstance(executor.Value, line);
+                    if (instance.IsForThisExecutor(line))
                     {
-                        instance.Execute(command);
+                        instance.Execute(line);
                     }
                 }
             }
@@ -99,12 +99,11 @@ namespace QMand
             }
         }
 
-        private Executor CreateExecutorInstance(Type executorType)
+        private Executor CreateExecutorInstance(Type executorType, string line)
         {
             var instance = Activator.CreateInstance(executorType) as Executor;
-            instance.Commands = Commands;
-            instance.Executors = Executors;
-            instance.Output = Output;
+            instance.SetParameters(line);
+            instance.Marshal = this;
 
             return instance;
         }

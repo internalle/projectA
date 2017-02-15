@@ -14,7 +14,7 @@ namespace QMand.Executors.Impl
 
         public override void Execute(string line)
         {
-            if (Output == System.Console.WriteLine)
+            if (Marshal.Output == System.Console.WriteLine)
             {
                 System.Console.Clear();
             }

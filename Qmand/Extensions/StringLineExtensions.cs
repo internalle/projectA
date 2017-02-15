@@ -8,14 +8,14 @@ namespace QMand.Extensions
 {
     internal static class StringLineExtensions
     {
-        public static string GetExecutorName(this string line)
+        public static string GetFirst(this string line, char split = ' ')
         {
-            return line.Split(' ').FirstOrDefault();
+            return line.Split(split).FirstOrDefault();
         }
 
-        public static string GetCommandName(this string line)
+        public static string GetRest(this string line, char split = ' ')
         {
-            return line.Split(' ').Skip(1).FirstOrDefault();
+            return string.Join(split.ToString(), line.Split(split).Skip(1));
         }
 
         public static Dictionary<string, string> GetCommandParameters(this string line)
@@ -23,7 +23,7 @@ namespace QMand.Extensions
             var pairs = line
                 .Split(new string[] { "--" }, StringSplitOptions.RemoveEmptyEntries)
                 .Skip(1)
-                .Select(x => new KeyValuePair<string, string>(x.Split(' ').FirstOrDefault(), string.Join("", x.Split(' ').Skip(1))));
+                .Select(x => new KeyValuePair<string, string>(x.Split(' ').FirstOrDefault(), string.Join(" ", x.Split(' ').Skip(1))));
 
             var dictionary = new Dictionary<string, string>();
 

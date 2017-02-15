@@ -11,7 +11,7 @@ namespace QMand.Executors
 {
     public abstract class Executor
     {
-        private Dictionary<string, string> Parameters { get; set; }
+        protected Dictionary<string, string> Parameters{ get; set; }
 
         public Executor()
         {
@@ -22,55 +22,42 @@ namespace QMand.Executors
 
         public abstract string Description { get; }
 
-        public abstract void Execute(string command);
+        public abstract void Execute(string line);
 
-        internal Action<object> Output { get; set; }
-
-        internal Dictionary<string, Type> Commands { get; set; }
-
-        internal Dictionary<string, Type> Executors { get; set; }
+        public CommandMarshal Marshal { get; set; }
 
         internal bool IsForThisExecutor(string line)
         {
-            return line.GetExecutorName() == Name;
+            return line.GetFirst() == Name;
         }
-        
-        protected string GetParametar(string name, string defaultValue = null)
+
+        protected string GetParameter(string name, string defaultValue = null)
         {
             return Parameters.ContainsKey(name) ? Parameters[name] : defaultValue;
         }
 
+        internal void SetParameters(string line)
+        {
+            Parameters.Add(line.GetCommandParameters());
+        }
+
         protected virtual ConsoleCommand GetConsoleCommand(string line)
         {
-            var commandName = line.GetCommandName();
+            var commandName = line.GetRest().GetFirst();
             var lineParams = line.GetCommandParameters();
 
-            if (!Commands.ContainsKey(commandName))
+            if (!Marshal.Commands.ContainsKey(commandName))
             {
                 throw new Exception("Unknown command");
             }
 
-            var commandInstance = Activator.CreateInstance(Commands[commandName]) as ConsoleCommand;
+            var commandInstance = Activator.CreateInstance(Marshal.Commands[commandName]) as ConsoleCommand;
 
             var commandParams = lineParams.Where(x => commandInstance.ParametersDefinition.Any(y => y.Name == x.Key));
             var executorParams = lineParams.Where(x => commandInstance.ParametersDefinition.Any(y => y.Name != x.Key));
 
             commandInstance.SetParameters(commandParams);
-            Parameters.Add(executorParams);
 
-            return commandInstance;
-        }
-
-        protected virtual Executor GetExecutor(string line)
-        {
-            var executorName = line.GetCommandName();
-
-            if (!Executors.ContainsKey(executorName))
-            {
-                throw new Exception("Unknown executor");
-            }
-
-            var commandInstance = Activator.CreateInstance(Executors[executorName]) as Executor;            
             return commandInstance;
         }
     }

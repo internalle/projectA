@@ -19,8 +19,10 @@ help [<CommandOrExecutorName>]";
 
         public override void Execute(string line)
         {
-            Output.Invoke("");
-            if (!string.IsNullOrEmpty(line.GetCommandName()))
+            Marshal.Output.Invoke("");
+            var commandOrExecutor = line.GetRest().GetFirst();
+
+            if (!string.IsNullOrEmpty(commandOrExecutor))
             {
                 try
                 {
@@ -28,46 +30,46 @@ help [<CommandOrExecutorName>]";
                 }
                 catch
                 {
-                    HelpForExecutor(line);
+                    HelpForExecutor(commandOrExecutor);
                 }
             }
             else
             {
                 GeneralHelp();
             }
-            Output.Invoke("");
+            Marshal.Output.Invoke("");
         }
 
         private void GeneralHelp()
         {
-            Output.Invoke("List of executors:");
-            foreach (var executor in Executors)
+            Marshal.Output.Invoke("List of executors:");
+            foreach (var executor in Marshal.Executors)
             {
-                Output.Invoke(executor.Key);
+                Marshal.Output.Invoke(executor.Key);
             }
-            Output.Invoke("");
-            Output.Invoke("help <executor>, for more help for a specific executor");
+            Marshal.Output.Invoke("");
+            Marshal.Output.Invoke("help <executor>, for more help for a specific executor");
 
-            Output.Invoke("");
-            Output.Invoke("");
+            Marshal.Output.Invoke("");
+            Marshal.Output.Invoke("");
 
-            Output.Invoke("List of commands:");
-            foreach (var command in Commands)
+            Marshal.Output.Invoke("List of commands:");
+            foreach (var command in Marshal.Commands)
             {
-                Output.Invoke(command.Key);
+                Marshal.Output.Invoke(command.Key);
             }
-            Output.Invoke("");
-            Output.Invoke("help <command>, for more help for a specific command");
+            Marshal.Output.Invoke("");
+            Marshal.Output.Invoke("help <command>, for more help for a specific command");
         }
 
         private void HelpForCommand(string line)
         {
             var commandInstance = GetConsoleCommand(line);
             
-            Output.Invoke($"{commandInstance.Description}");
+            Marshal.Output.Invoke($"{commandInstance.Description}");
 
-            Output.Invoke("");
-            Output.Invoke("Example:");
+            Marshal.Output.Invoke("");
+            Marshal.Output.Invoke("Example:");
 
             string commandExample = commandInstance.Name;
 
@@ -81,24 +83,24 @@ help [<CommandOrExecutorName>]";
                 commandExample += $" --{optionalParam.Name} <Value>";
             }
 
-            Output.Invoke(commandExample);
-            Output.Invoke("");
+            Marshal.Output.Invoke(commandExample);
+            Marshal.Output.Invoke("");
             foreach (var requiredParam in commandInstance.ParametersDefinition.Where(x => x.Type == ParameterType.Required))
             {
-                Output.Invoke($"--{requiredParam.Name} is requred, {requiredParam.Description}");
+                Marshal.Output.Invoke($"--{requiredParam.Name} is requred, {requiredParam.Description}");
             }
 
             foreach (var optionalParam in commandInstance.ParametersDefinition.Where(x => x.Type == ParameterType.Optional))
             {
-                Output.Invoke($"--{optionalParam.Name} is optional, { optionalParam.Description}");
+                Marshal.Output.Invoke($"--{optionalParam.Name} is optional, { optionalParam.Description}");
             }
         }
 
-        private void HelpForExecutor(string line)
+        private void HelpForExecutor(string exectorName)
         {
-            var commandInstance = GetExecutor(line);
+            var executorInstance = Activator.CreateInstance(Marshal.Executors[exectorName.GetFirst()]) as Executor;
             
-            Output.Invoke($"{commandInstance.Description}");
+            Marshal.Output.Invoke($"{executorInstance.Description}");
         }
     }
 }
